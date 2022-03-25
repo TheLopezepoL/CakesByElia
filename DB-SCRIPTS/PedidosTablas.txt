@@ -1,0 +1,50 @@
+--CREAR TABLAS
+CREATE TABLE Cliente(
+    id_Cliente INT,
+    nombre VARCHAR2(30) NOT NULL,
+    telefono VARCHAR2(12) NOT NULL,
+    CONSTRAINT pk_Cliente PRIMARY KEY (id_Cliente)
+);
+
+CREATE TABLE Pedido(
+    id_Pedido INT,
+    id_ProductoFK INT,
+    id_SucursalFK INT,
+    fecha_Pedido DATE NOT NULL,
+    fecha_Entrega DATE NOT NULL,
+    direccion_Entrega VARCHAR2(120) NOT NULL,
+    CONSTRAINT pk_Pedido PRIMARY KEY (id_Pedido),
+    CONSTRAINT fk_Producto FOREIGN KEY (id_Producto) REFERENCES Producto(id_Producto),
+    CONSTRAINT fk_Sucursal FOREIGN KEY (id_SucursalFK) REFERENCES Sucursal(id_Sucursal)
+);
+
+CREATE TABLE Bitacora(
+    id_Bitacora INT,
+    id_PedidoFK INT,
+    tipo_Cambio VARCHAR2(15) NOT NULL,
+    fecha DATE,
+    CONSTRAINT pk_Bitacora PRIMARY KEY (id_Bitacora),
+    CONSTRAINT fk_Pedido FOREIGN KEY (id_PedidoFK) REFERENCES Bitacora(id_Bitacora)
+);
+
+
+CREATE TABLE ClienteXPedido(
+    id_ClienteFK INT,
+    id_PedidoFK INT,
+    CONSTRAINT pk_ClienteXPedido PRIMARY KEY (id_ClienteFK, id_PedidoFK),
+    CONSTRAINT fk_Cliente FOREIGN KEY (id_ClienteFK) REFERENCES Cliente(id_Cliente),
+    CONSTRAINT fk_Pedido FOREIGN KEY (id_PedidoFK) REFERENCES Pedido(id_Pedido)
+);
+
+--CREAR SECUENCIAS
+CREATE SEQUENCE Cliente
+    START WITH 1
+    INCREMENT BY 1;
+    
+CREATE SEQUENCE Pedido
+    START WITH 1
+    INCREMENT BY 1;
+    
+CREATE SEQUENCE Bitacora
+    START WITH 1
+    INCREMENT BY 1;
