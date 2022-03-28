@@ -10,12 +10,14 @@ CREATE TABLE Pedido(
     id_Pedido INT,
     id_ProductoFK INT,
     id_SucursalFK INT,
+    id_ClienteFK INT,
     fecha_Pedido DATE NOT NULL,
     fecha_Entrega DATE NOT NULL,
     direccion_Entrega VARCHAR2(120) NOT NULL,
     CONSTRAINT pk_Pedido PRIMARY KEY (id_Pedido),
     CONSTRAINT fk_Producto FOREIGN KEY (id_Producto) REFERENCES Producto(id_Producto),
-    CONSTRAINT fk_Sucursal FOREIGN KEY (id_SucursalFK) REFERENCES Sucursal(id_Sucursal)
+    CONSTRAINT fk_Sucursal FOREIGN KEY (id_SucursalFK) REFERENCES Sucursal(id_Sucursal),
+    CONSTRAINT fk_Cliente FOREIGN KEY (id_ClienteFK) REFERENCES Cliente(id_Cliente)
 );
 
 CREATE TABLE Bitacora(
@@ -27,14 +29,6 @@ CREATE TABLE Bitacora(
     CONSTRAINT fk_Pedido FOREIGN KEY (id_PedidoFK) REFERENCES Bitacora(id_Bitacora)
 );
 
-
-CREATE TABLE ClienteXPedido(
-    id_ClienteFK INT,
-    id_PedidoFK INT,
-    CONSTRAINT pk_ClienteXPedido PRIMARY KEY (id_ClienteFK, id_PedidoFK),
-    CONSTRAINT fk_Cliente FOREIGN KEY (id_ClienteFK) REFERENCES Cliente(id_Cliente),
-    CONSTRAINT fk_Pedido FOREIGN KEY (id_PedidoFK) REFERENCES Pedido(id_Pedido)
-);
 
 --CREAR SECUENCIAS
 CREATE SEQUENCE Cliente
@@ -48,3 +42,80 @@ CREATE SEQUENCE Pedido
 CREATE SEQUENCE Bitacora
     START WITH 1
     INCREMENT BY 1;
+    
+--CRUD BITACORA
+CREATE OR REPLACE PROCEDURE agrBitacora (pID_Pedido INT, pTipo_Cambio VARCHAR2, pFecha DATE)
+BEGIN
+    INSERT INTO Bitacora(id_PedidoFK, tipo_Cambio, fecha)
+    VALUES(pID_Pedido, pTipo_Cambio, pFecha)
+END;
+
+
+--PROCEDURES FOR BITACORA
+CREATE OR REPLACE PROCEDURE auxAgrPedido (pID INT, pFecha DATE)
+BEGIN
+    EXEC agragrBitacora(pID, 'INSERT', pFecha)
+END;
+
+CREATE OR REPLACE PROCEDURE auxModPedido (pID INT, pFecha DATE)
+BEGIN
+    EXEC agragrBitacora(pID, 'UPDATE', pFecha)
+END;
+
+CREATE OR REPLACE PROCEDURE auxElmPedido (pID INT, pFecha DATE)
+BEGIN
+    EXEC agragrBitacora(pID, 'DELETE', pFecha)
+END;
+
+
+--PROCEDURES FOR DELETES
+
+
+
+--CRUD's
+CREATE OR REPLACE PROCEDURE agrCliente (pNombre VARCHAR2, pTelefono VARCHAR2)
+BEGIN
+    INSERT INTO Cliente(nombre, telefono)
+    VALUES(pNombre, pTelefono)
+END;
+
+CREATE OR REPLACE PROCEDURE modCliente (pID INT, p pNombre VARCHAR2, pTelefono VARCHAR2)
+BEGIN
+    UPDATE Cliente
+    SET nombre = pNombre, telefono = pTelefono
+    WHERE id_Cliente = pID
+END;
+
+CREATE OR REPLACE PROCEDURE elmCliente (pID INT)
+BEGIN
+    DELETE FROM Cliente
+    WHERE id_Cliente = pID
+END;
+
+CREATE OR REPLACE PROCEDURE agrPedido (pID_Producto INT, pID_Sucursal INT, pID_Cliente INT, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2, pFecha DATE)
+DEFINE
+    -- Ver punteros de nuevo y hacer un puntero del ultimo registro de la tabla
+    lastID;
+BEGIN
+    INSERT INTO Pedido(id_ProductoFK, id_SucursalFK, id_ClienteFK, fecha_Pedido, fecha_Entrega, direccion_Entrega)
+    VALUES(pID_Producto INT, pID_Sucursal INT, pID_Cliente INT, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2)
+    
+    EXEC auxAgrPedido(lastID, pFecha)
+END;
+
+CREATE OR REPLACE PROCEDURE modPedido (pID INT, pID_Producto INT, pID_Sucursal INT, pID_Cliente INT, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2, pFecha DATE)
+BEGIN
+    UPDATE Pedido
+    SET id_ProductoFK = pID_Producto, id_SucursalFK = pID_Sucursal, id_ClienteFK = pID_Cliente, fecha_Pedido = pFecha_Pedido, fecha_Entrega = pFecha_Entrega, direccion_Entrega = pDireccion_Entrega
+    WHERE id_Pedido = pID
+    
+    EXEC auxModPedido(pID, pFecha)
+END;
+
+CREATE OR REPLACE PROCEDURE elmPedido (pID INT, pFecha DATE)
+BEGIN
+    DELETE FROM Pedido
+    WHERE id_Pedido = pID
+    
+    EXEC auxElmPedido(pID, pFecha)
+END;
