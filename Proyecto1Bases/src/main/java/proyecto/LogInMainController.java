@@ -34,6 +34,8 @@ public class LogInMainController {
     private Scene escena;
     private Parent root;
 
+    private OracleJBDC JBDC_Instacia = OracleJBDC.getInstancia();
+
 
     @FXML
     protected void iniciarSesion(ActionEvent evento) throws IOException {
@@ -69,7 +71,7 @@ public class LogInMainController {
 
     @FXML
     protected void onHelloButtonClick() {
-        OracleJBDC test = new OracleJBDC();
-        test.probarConexion("jdbc:oracle:thin:@192.168.100.90:1521:ORCLCDB","sys as sysdba", "oracle");
+        //OracleJBDC test = new OracleJBDC();
+        JBDC_Instacia.probarConexion("jdbc:oracle:thin:@192.168.100.90:1521:ORCLCDB","sys as sysdba", "oracle");
     }
 }

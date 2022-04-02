@@ -2,10 +2,25 @@ package proyecto.modelo;
 
 import java.sql.*;
 
+//Class Singleton
 public class OracleJBDC {
 
     Connection conexion = null;
     Statement sentencia = null;
+
+    private static final OracleJBDC instancia;
+
+    static {
+        instancia = new OracleJBDC();
+    }
+
+    private OracleJBDC(){
+
+    }
+
+    public static OracleJBDC getInstancia(){
+        return instancia;
+    }
 
     /*
     Función para probar la conexion a la base de datos
@@ -39,8 +54,6 @@ public class OracleJBDC {
            // e.printStackTrace();
             System.err.println(e.getClass().getName() + " : " + e.getMessage());
         }
-
-
     }
 
 }

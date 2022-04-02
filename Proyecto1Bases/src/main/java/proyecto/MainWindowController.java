@@ -45,10 +45,15 @@ public class MainWindowController {
     @FXML
     private Button btn_CerrarSesion;
 
+    //Modelo de la Base de Datos
+
+
 
     public void setInformacionSesion( String pNombreUsuario ){
         label_NombreUsuario.setText("User: " + pNombreUsuario);
     }
+
+
 
 
 
