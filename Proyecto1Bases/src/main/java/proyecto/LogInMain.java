@@ -10,7 +10,7 @@ import java.io.IOException;
 public class LogInMain extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(LogInMain.class.getResource("vista/loginmain-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("vista/loginmain-view.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("Mana's Cakes, DB System!");

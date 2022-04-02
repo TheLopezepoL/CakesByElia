@@ -1,4 +1,4 @@
-package proyecto.controlador;
+package proyecto;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -6,44 +6,44 @@ import javafx.scene.control.*;
 public class MainWindowController {
     //Vista 1 Tablas
     @FXML
-    Label label_Tablas;
+    private Label label_Tablas;
     @FXML
-    Button btn_Tabla1;
+    private Button btn_Tabla1;
 
     //Vista 2: Vista Principal de Las tablas y menu
     //Menu de opciones de la tabla que se está viendo en ese momento
     @FXML
-    Button btn_menu_nuevo;
+    private Button btn_menu_nuevo;
     @FXML
-    Button btn_menu_actualizar;
+    private Button btn_menu_actualizar;
     @FXML
-    Button btn_menu_borrar;
+    private Button btn_menu_borrar;
     @FXML
-    TextField tf_menu_buscar;
+    private TextField tf_menu_buscar;
     @FXML
-    SplitMenuButton btn_menu_buscar;
+    private SplitMenuButton btn_menu_buscar;
     //Tabla
     @FXML
-    TableView tableView_tablaActual;
+    private TableView tableView_tablaActual;
 
     //Vista3: Menú derecha, Reportes y Info de la sesión y Cerrar sesión
     //Reportes
     @FXML
-    Label label_Reportes;
+    private Label label_Reportes;
     @FXML
-    Button btn_Reporte1;
+    private Button btn_Reporte1;
 
     //Sesión
     @FXML
-    Label label_SesionActual;
+    private Label label_SesionActual;
     @FXML
-    Label label_NombreUsuario;
+    private Label label_NombreUsuario;
     @FXML
-    Label label_IdEmpleado;
+    private Label label_IdEmpleado;
     @FXML
-    Label label_PuestoEmpleado;
+    private Label label_PuestoEmpleado;
     @FXML
-    Button btn_CerrarSesion;
+    private Button btn_CerrarSesion;
 
 
     public void setInformacionSesion( String pNombreUsuario ){
