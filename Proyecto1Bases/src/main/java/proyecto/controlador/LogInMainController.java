@@ -9,20 +9,28 @@ import javafx.scene.control.Label;
 public class LogInMainController {
     @FXML
     private Label label_derecha_login;
+    @FXML
     private Label label_izquierda_login;
+
+    @FXML
     private TextField tf_usuario_login;
+    @FXML
     private TextField tf_contrasenia_login;
+
+    @FXML
     private Button ingresar_btn_login;
 
 
     @FXML
     protected void iniciarSesion(){
-//        String usuario = tf_usuario_login.getText();
-//        String contrasenia = tf_contrasenia_login.getText();
+        String usuario = tf_usuario_login.getText();
+        String contrasenia = tf_contrasenia_login.getText();
 
-//        System.out.println("User: " + usuario + " Password:" + contrasenia);
+        System.out.println("User: " + usuario + " Password:" + contrasenia);
         System.out.println("Hola");
     }
+
+
 
 
     @FXML
