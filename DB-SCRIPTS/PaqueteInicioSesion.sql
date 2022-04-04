@@ -202,4 +202,13 @@ SELECT * FROM USUARIO;
 SELECT * FROM EMPLEADO;
 
 Select * from sucursal;
+
+
+
+--Para conocer las tablas del usuario
+
+SELECT table_name FROM user_tables ORDER BY table_name;
 */
+
+
+--Procedimiento para hacer log in 

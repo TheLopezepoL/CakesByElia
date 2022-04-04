@@ -2,8 +2,13 @@ package proyecto;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import proyecto.modelo.Empleado;
+import proyecto.modelo.MainWindowModel;
 
 public class MainWindowController {
+
+    MainWindowModel mainWindowModel = null;
+
     //Vista 1 Tablas
     @FXML
     private Label label_Tablas;
@@ -45,16 +50,11 @@ public class MainWindowController {
     @FXML
     private Button btn_CerrarSesion;
 
-    //Modelo de la Base de Datos
-
-
-
-    public void setInformacionSesion( String pNombreUsuario ){
-        label_NombreUsuario.setText("User: " + pNombreUsuario);
+    //Constructor de la vara
+    public void setInformacionSesion( Empleado pEmpleado ){
+        mainWindowModel = new MainWindowModel( pEmpleado );
+        label_NombreUsuario.setText(mainWindowModel.getEmpleado().getNombre());
     }
-
-
-
 
 
 
