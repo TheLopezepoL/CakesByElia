@@ -4,7 +4,7 @@ import java.sql.*;
 
 //Class Singleton
 public class OracleJBDC {
-
+ 
     Connection conexion = null;
     Statement sentencia = null;
 
