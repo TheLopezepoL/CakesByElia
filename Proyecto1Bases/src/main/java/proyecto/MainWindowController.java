@@ -5,6 +5,8 @@ import javafx.scene.control.*;
 import proyecto.modelo.Empleado;
 import proyecto.modelo.MainWindowModel;
 
+import java.sql.SQLException;
+
 public class MainWindowController {
 
     MainWindowModel mainWindowModel = null;
@@ -51,7 +53,7 @@ public class MainWindowController {
     private Button btn_CerrarSesion;
 
     //Constructor de la vara
-    public void setInformacionSesion( Empleado pEmpleado ){
+    public void setInformacionSesion( Empleado pEmpleado ) throws SQLException {
         mainWindowModel = new MainWindowModel( pEmpleado );
         label_NombreUsuario.setText(mainWindowModel.getEmpleado().getNombre());
     }

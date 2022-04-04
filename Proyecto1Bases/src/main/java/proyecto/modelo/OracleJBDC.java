@@ -1,11 +1,13 @@
 package proyecto.modelo;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Objects;
 
 //Class Singleton
 public class OracleJBDC {
-    private String instanciaURL = "jdbc:oracle:thin:@192.168.100.90:1521:grp06db";
+    //private String instanciaURL = "jdbc:oracle:thin:@192.168.100.90:1521:grp06db";
+    private String instanciaURL = "jdbc:oracle:thin:@172.20.10.3:1521:grp06db";
     private String instanciaUsuario = "C##userproyecto1";
     private String instaciaContrasenia = "oracle1";
 
@@ -128,4 +130,32 @@ public class OracleJBDC {
         }
     }
 
+    //Retorna lista de las tablas que el usuario tiene acceso
+    public ArrayList<String> getTablasUsuario() throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null){
+            System.out.println("Trayendo las tablas del usuario de la base de datos");
+
+
+            Statement sentenciaProcedimiento = baseDatos.createStatement();
+            String gettablas = "SELECT table_name FROM user_tables";   //Acá no sé si debe ser un Stored procedure 
+
+
+            ResultSet resultado = sentenciaProcedimiento.executeQuery(gettablas);
+
+
+            ArrayList<String> listaTablas = new ArrayList<>();
+
+            Empleado empleado = null;
+            while (resultado.next() ){
+                listaTablas.add(resultado.getString("TABLE_NAME"));
+            }
+            cerrarConexionBase(baseDatos, sentenciaProcedimiento, resultado);
+            return listaTablas;
+
+        }else {
+            return null;
+        }
+    }
 }
