@@ -139,7 +139,7 @@ public class OracleJBDC {
 
 
             Statement sentenciaProcedimiento = baseDatos.createStatement();
-            String gettablas = "SELECT table_name FROM user_tables";   //Acá no sé si debe ser un Stored procedure 
+            String gettablas = "SELECT table_name FROM user_tables";   //Acá no sé si debe ser un Stored procedure
 
 
             ResultSet resultado = sentenciaProcedimiento.executeQuery(gettablas);

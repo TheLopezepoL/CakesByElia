@@ -18,9 +18,11 @@ public class MainWindowModel {
         return empleado;
     }
 
-    public void getListaTablas() throws SQLException {
+    public ArrayList<String> getListaTablas() throws SQLException {
 
-        System.out.println(this.oracleJBDC.getTablasUsuario());
-
+        ArrayList<String> listaTablas = this.oracleJBDC.getTablasUsuario();
+        System.out.println(listaTablas);
+        return listaTablas;
     }
+
 }

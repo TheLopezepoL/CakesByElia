@@ -211,4 +211,17 @@ SELECT table_name FROM user_tables ORDER BY table_name;
 */
 
 
---Procedimiento para hacer log in 
+-- --Procedimiento para Obetner las tablas del usuario de la base de datos 
+
+-- create or replace PROCEDURE obtenerTablasDBUser
+-- IS
+--   c1 SYS_REFCURSOR;  
+-- BEGIN
+
+--   OPEN c1 FOR 
+  
+--   SELECT table_name FROM user_tables;
+--   DBMS_SQL.RETURN_RESULT(c1);
+
+-- END obtenerTablasDBUser;
+-- /

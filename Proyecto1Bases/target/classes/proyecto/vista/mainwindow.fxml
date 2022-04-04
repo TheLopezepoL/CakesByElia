@@ -30,9 +30,9 @@
                <top>
                   <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <items>
-                      <Button fx:id="btn_menu_nuevo" mnemonicParsing="false" text="Nuevo" />
-                        <Button fx:id="btn_menu_actualizar" mnemonicParsing="false" text="Actualizar" />
-                        <Button fx:id="btn_menu_borrar" mnemonicParsing="false" text="Borrar" />
+                      <Button fx:id="btn_menu_nuevo" mnemonicParsing="false" onAction="#handlerBotonesMain" text="Nuevo" />
+                        <Button fx:id="btn_menu_actualizar" mnemonicParsing="false" onAction="#handlerBotonesMain" text="Actualizar" />
+                        <Button fx:id="btn_menu_borrar" mnemonicParsing="false" onAction="#handlerBotonesMain" text="Borrar" />
                         <TextField fx:id="tf_menu_buscar" alignment="TOP_RIGHT" promptText="Buscar" />
                         <SplitMenuButton fx:id="btn_menu_buscar" mnemonicParsing="false" text="Buscar por Id">
                           <items>
@@ -54,7 +54,7 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </Label>
-                        <VBox alignment="TOP_CENTER" prefHeight="274.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                        <VBox fx:id="vbox_botones_tablas" alignment="TOP_CENTER" prefHeight="274.0" prefWidth="100.0" spacing="20.0" VBox.vgrow="ALWAYS">
                            <children>
                               <Button fx:id="btn_Tabla1" mnemonicParsing="false" text="Tabla 1">
                                  <VBox.margin>
@@ -116,7 +116,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <Button fx:id="btn_CerrarSesion" mnemonicParsing="false" text="Cerrar Sesión" />
+                              <Button fx:id="btn_CerrarSesion" mnemonicParsing="false" onAction="#handlerBotonesMain" text="Cerrar Sesión" />
                            </children>
                         </VBox>
                      </children></AnchorPane>
