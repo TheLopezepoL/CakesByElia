@@ -63,6 +63,8 @@ public class LogInMainController {
     //Cambia a la escena principal
     public void cambiarEscena( Empleado pEmpleado, ActionEvent evento ) throws IOException, SQLException {
 
+        System.out.println(pEmpleado);
+
 
         FXMLLoader loader = new FXMLLoader( getClass().getResource("vista/mainwindow.fxml") );  //Carga la Escena
         root = loader.load();

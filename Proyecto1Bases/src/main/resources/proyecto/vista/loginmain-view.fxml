@@ -31,12 +31,12 @@
                               <Insets bottom="50.0" />
                            </VBox.margin>
                         </Label>
-                        <TextField fx:id="tf_usuario_login" alignment="CENTER" promptText="Usuario">
+                        <TextField fx:id="tf_usuario_login" alignment="CENTER" promptText="Usuario" text="usr1ana">
                            <VBox.margin>
                               <Insets bottom="30.0" />
                            </VBox.margin>
                         </TextField>
-                        <PasswordField fx:id="tf_contrasenia_login" alignment="CENTER" promptText="Contraseña">
+                        <PasswordField fx:id="tf_contrasenia_login" alignment="CENTER" promptText="Contraseña" text="pass1">
                            <VBox.margin>
                               <Insets bottom="30.0" />
                            </VBox.margin>

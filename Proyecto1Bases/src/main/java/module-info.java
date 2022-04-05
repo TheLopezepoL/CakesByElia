@@ -7,5 +7,8 @@ module proyecto {
     opens proyecto to javafx.fxml;
     exports proyecto;
 
+    opens proyecto.modelo to javafx.base;
+    exports proyecto.modelo;
+
 
 }

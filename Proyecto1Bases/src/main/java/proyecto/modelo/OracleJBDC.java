@@ -114,7 +114,7 @@ public class OracleJBDC {
     public int validar_credenciales(String pUsuario, String pContrasenia) throws SQLException {
         try {
             Connection conBase = conectarBaseDatos();
-            CallableStatement validarLogin_fn = conBase.prepareCall("{? = call valida_login(?,?)}");
+            CallableStatement validarLogin_fn = conBase.prepareCall("{? = call CONSULTAS_PASTELERIA_PKG.valida_login(?,?)}");
 
             validarLogin_fn.registerOutParameter(1, Types.NUMERIC);
             validarLogin_fn.setString(2, pUsuario);
@@ -144,10 +144,13 @@ public class OracleJBDC {
             ResultSet resultado = sentenciaSQL.executeQuery(getEmpelado);
             Empleado empleado = null;
             while (resultado.next()){
-                empleado = new Empleado( idEmpleado,
+                empleado = new Empleado("" + idEmpleado, resultado.getString("id_sucursalfk"),
                         resultado.getString("puesto_empleado"),
                         resultado.getString("nombre_empleado"),
-                        resultado.getString("apellido1_empleado") );
+                        resultado.getString("apellido1_empleado"),
+                        resultado.getString("apellido2_empleado"),
+                        resultado.getString("telefono_empleado")
+                        );
             }
             cerrarConexionBase(baseDatos, sentenciaSQL, resultado);
             return empleado;
