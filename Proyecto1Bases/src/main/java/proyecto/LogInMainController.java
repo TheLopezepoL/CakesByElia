@@ -39,6 +39,7 @@ public class LogInMainController {
     private OracleJBDC JBDC_Instacia = OracleJBDC.getInstancia();
 
 
+
     @FXML
     protected void iniciarSesion(ActionEvent evento) throws IOException, SQLException {
         String usuario = tf_usuario_login.getText();

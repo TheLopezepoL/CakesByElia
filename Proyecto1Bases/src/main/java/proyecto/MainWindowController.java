@@ -96,6 +96,8 @@ public class MainWindowController {
     }
 
     //Todos los botones, excepto el botón de buscar, que no sé como manejar ese todavía, fijo es parecido, pero who knows
+    //Deben estar los botones de cada tabla
+    //Que llaman a cargar la tabla de la GUI con el nombre de esa tabla.
     public void handlerBotonesMain(Event e ){
 
         String id = ((Node) e.getSource()).getId();
@@ -125,6 +127,7 @@ public class MainWindowController {
                 break;
             case "btn_menu_borrar":
                 System.out.println("Borrar la fila seleccionada en la tabla");
+                eliminarElemento();
                 break;
             case"btn_CerrarSesion":
                 System.out.println("Cerrando Sesion");
@@ -156,6 +159,14 @@ public class MainWindowController {
 
         TableColumn<Empleado, String> puestoColum = new TableColumn<>("puesto");
         puestoColum.setCellValueFactory( new PropertyValueFactory<>("puesto"));
+        puestoColum.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Empleado, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Empleado, String> empleadoStringCellEditEvent) {
+                Empleado empleadoEditado = empleadoStringCellEditEvent.getRowValue();
+                empleadoEditado.setPuesto(empleadoStringCellEditEvent.getNewValue());
+            }
+        });
+        puestoColum.setEditable(true);
 
         TableColumn<Empleado, String> nombreColumn = new TableColumn<>("nombre");
         nombreColumn.setCellValueFactory( new PropertyValueFactory<>("nombre"));
@@ -170,12 +181,49 @@ public class MainWindowController {
         telColumn.setCellValueFactory( new PropertyValueFactory<>("telefono"));
 
         TableView<Empleado> tablaEmpleado = new TableView<>(); //Se crea un table view
-        tablaEmpleado.setItems(empleados);
-        tablaEmpleado.getColumns().setAll(idColumn, idSucursalColumn, puestoColum, nombreColumn, ap1Column,ap2Column,telColumn);
+        tablaEmpleado.setEditable(true);
+        tablaEmpleado.setItems(empleados);                     //Se setean los datos al table view
+        tablaEmpleado.getColumns().setAll(idColumn, idSucursalColumn, puestoColum, nombreColumn, ap1Column,ap2Column,telColumn); //Se agregan las columnas a la vista
 
 
         borderPane_centerTable.setCenter(tablaEmpleado); //Se coloca el Table View en el centro del Border Pane
     }
+
+    //Consigue la tabla de MainTableWindowModel
+    //Elimina el elemento
+    private void eliminarElemento () {
+
+        String tabla = mainWindowModel.getTablaActual(); //Acá sabemos la tabla de la cual tenemos que eliminar
+        System.out.println("Borrando el elemento elimin");
+
+        //Acá habría que poner un case para cada tabla
+        switch (tabla){
+            case "EMPLEADO":
+                //Acá hay que llamar al tablewindowmodel que le diga al JBDC que elimine el elemento
+                // Que luego nos devuelva la tabla que acaba de modificar
+                //cargar la tabla de nuevo
+                Empleado empleadoAEliminar = ((TableView<Empleado>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                //Se manda a eliminar el elemento del empleado con el id
+                System.out.println("Eliminando Empleado con id "+ empleadoAEliminar.getId() + " y nombre " + empleadoAEliminar.getNombre());
+                break;
+        }
+    }
+
+    private void actualizarElemento(){
+
+        switch (mainWindowModel.getTablaActual()){
+            case "Empleado":
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                Empleado empleadoAActualizar = ((TableView<Empleado>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                System.out.println("Nuevos Valores del empleado " + empleadoAActualizar);
+
+                break;
+        }
+
+    }
+
+
 
     private void insertarNuevo (){
         //Saber primero que tabla es la que tenemos en la vista

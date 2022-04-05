@@ -6,10 +6,12 @@ import java.util.ArrayList;
 public class MainWindowModel {
     private Empleado empleado = null;
     private OracleJBDC oracleJBDC = null;
+    private String tablaActual = "";
 
     public MainWindowModel(Empleado empleado) throws SQLException {
         this.empleado = empleado;
         this.oracleJBDC = OracleJBDC.getInstancia();
+        this.tablaActual = "EMPLEADO";
 
         getListaTablas();
     }
@@ -25,4 +27,11 @@ public class MainWindowModel {
         return listaTablas;
     }
 
+    public String getTablaActual() {
+        return tablaActual;
+    }
+
+    public void setTablaActual(String tablaActual) {
+        this.tablaActual = tablaActual;
+    }
 }

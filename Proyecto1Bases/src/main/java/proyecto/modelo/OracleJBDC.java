@@ -6,8 +6,8 @@ import java.util.Objects;
 
 //Class Singleton
 public class OracleJBDC {
-    //private String instanciaURL = "jdbc:oracle:thin:@192.168.100.90:1521:grp06db";
-    private String instanciaURL = "jdbc:oracle:thin:@172.20.10.3:1521:grp06db";
+    private String instanciaURL = "jdbc:oracle:thin:@192.168.100.90:1521:grp06db";
+    //private String instanciaURL = "jdbc:oracle:thin:@172.20.10.3:1521:grp06db";
     private String instanciaUsuario = "C##userproyecto1";
     private String instaciaContrasenia = "oracle1";
 
