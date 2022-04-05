@@ -225,3 +225,26 @@ SELECT table_name FROM user_tables ORDER BY table_name;
 
 -- END obtenerTablasDBUser;
 -- /
+
+create or replace FUNCTION  valida_login(pUsuario VARCHAR2, pContrasenia VARCHAR2)
+    RETURN NUMBER IS
+        v_contrasenia VARCHAR2(10);
+        v_id NUMBER;
+    BEGIN 
+        SELECT CONTRASENIA_USUARIO INTO v_contrasenia
+        FROM USUARIO WHERE usuario.usuario_usuario = pUsuario;
+        
+        
+
+        IF v_contrasenia = pContrasenia THEN 
+            SELECT ID_EMPLEADOFK into v_id
+            FROM usuario where usuario.usuario_usuario = pUsuario;
+            return v_id;
+        ELSE
+            RETURN 0;
+        END IF;
+        
+        EXCEPTION WHEN OTHERS THEN 
+        RETURN 0;
+    END;
+    /

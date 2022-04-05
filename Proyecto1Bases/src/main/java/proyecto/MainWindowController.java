@@ -62,7 +62,9 @@ public class MainWindowController {
     //Constructor de la vara
     public void setInformacionSesion( Empleado pEmpleado ) throws SQLException {
         mainWindowModel = new MainWindowModel( pEmpleado );
-        label_NombreUsuario.setText(mainWindowModel.getEmpleado().getNombre());
+        label_NombreUsuario.setText(mainWindowModel.getEmpleado().getNombre() + mainWindowModel.getEmpleado().getApellido1());
+        label_IdEmpleado.setText( "" + mainWindowModel.getEmpleado().getId());
+        label_PuestoEmpleado.setText("Id: " + mainWindowModel.getEmpleado().getPuesto());
 
         setBotonesTablas(this.mainWindowModel.getListaTablas());
     }
@@ -78,15 +80,14 @@ public class MainWindowController {
 
         }
 
-
     }
 
     //Todos los botones, excepto el botón de buscar, que no sé como manejar ese todavía, fijo es parecido, pero who knows
     public void handlerBotonesMain(Event e ){
-        System.out.println("Hola");
+
         String id = ((Node) e.getSource()).getId();
 
-        System.out.println(id);
+        System.out.println("Boton presionado: " + id);
 
         switch(id) {
             case "btn_EMPLEADO":
@@ -98,9 +99,24 @@ public class MainWindowController {
             case "btn_USUARIO":
                 System.out.println("Cargando Vista de Usuario");
                 break;
+            case "btn_menu_buscar":
+                System.out.println("Iniciando Busqueda");
+                busquedaTabla( btn_menu_buscar.getText() );
+                break;
         }
-
-
     }
+
+
+    //Cuando se Presiona el boton de buscar acá se hace la lógica de la búsqueda
+    private void busquedaTabla(String pBusqueda){
+        System.out.println("Buscando por: " + pBusqueda);
+    }
+
+    //Cambia la busqueda con el menu button
+    public void cambiarBusqueda(Event e){
+        String textMenu = ((MenuItem) e.getSource() ).getText();
+        btn_menu_buscar.setText(textMenu);
+    }
+
 
 }

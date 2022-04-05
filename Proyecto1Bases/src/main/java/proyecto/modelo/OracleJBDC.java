@@ -97,10 +97,36 @@ public class OracleJBDC {
         }
     }
 
+    //Retorna True si pudo cerrar la conexion de la base de datos
+    private boolean cerrarConexionBase(Connection pConeccion, CallableStatement pSentencia) throws SQLException {
+        try {
+            pConeccion.close();
+            pSentencia.close();
+
+            return true;
+        }catch (SQLException e) {
+            System.err.println(e.getClass().getName() + " : " + e.getMessage());
+            return false;
+        }
+    }
+
     //Valida las credenciales con la base de datos y retorna el id del empleado
-    public int validar_credenciales(String pUsuario, String pContrasenia){
-        if (Objects.equals(pUsuario, "usr1") && Objects.equals(pContrasenia, "pass1")) return 1;
-        else{
+    public int validar_credenciales(String pUsuario, String pContrasenia) throws SQLException {
+        try {
+            Connection conBase = conectarBaseDatos();
+            CallableStatement validarLogin_fn = conBase.prepareCall("{? = call valida_login(?,?)}");
+
+            validarLogin_fn.registerOutParameter(1, Types.NUMERIC);
+            validarLogin_fn.setString(2, pUsuario);
+            validarLogin_fn.setString(3, pContrasenia);
+            validarLogin_fn.execute();
+            int idEmpleado = validarLogin_fn.getInt(1);
+
+            cerrarConexionBase(conBase, validarLogin_fn);
+
+            return idEmpleado;
+        }catch (SQLException e){
+            System.out.println("Error conectandose a la base de datos para traer el usuario");
             return 0;
         }
     }
