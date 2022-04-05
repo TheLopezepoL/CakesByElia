@@ -249,7 +249,7 @@ create or replace FUNCTION  valida_login(pUsuario VARCHAR2, pContrasenia VARCHAR
     END;
     /
     
-    --Creacion de Tablas 
+--Creacion de Tablas 
 
 DROP TABLE Ingrediente;
 DROP TABLE Producto;
@@ -308,13 +308,14 @@ CREATE TABLE Inventarios (
     CONSTRAINT FK_InventariosIngrediente foreign key (Id_IngredienteFK) references Ingrediente(Id_Ingrediente)
 );
 
+
 --Creacion de Secuencias 
 DROP SEQUENCE Ingrediente_SEQ;
 DROP SEQUENCE Producto_SEQ;
 DROP SEQUENCE Proveedor_SEQ;
-DROP SEQUENCE Precios_SEQ;
-DROP SEQUENCE ListaIngredientes_SEQ;
-DROP SEQUENCE Inventarios_SEQ;
+-- DROP SEQUENCE Precios_SEQ;
+-- DROP SEQUENCE ListaIngredientes_SEQ;
+-- DROP SEQUENCE Inventarios_SEQ;
 
 CREATE SEQUENCE Ingrediente_Seq
     START WITH 1 

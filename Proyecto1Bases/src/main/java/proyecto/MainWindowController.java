@@ -59,7 +59,7 @@ public class MainWindowController {
     @FXML
     private Button btn_CerrarSesion;
 
-    //Constructor de la vara
+    //Constructor
     public void setInformacionSesion( Empleado pEmpleado ) throws SQLException {
         mainWindowModel = new MainWindowModel( pEmpleado );
         label_NombreUsuario.setText(mainWindowModel.getEmpleado().getNombre() + mainWindowModel.getEmpleado().getApellido1());
