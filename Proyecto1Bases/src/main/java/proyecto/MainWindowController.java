@@ -153,7 +153,13 @@ public class MainWindowController {
             case "EMPLEADO":
                 //Acá debemos pedir al MainWindowModel la lista de ObservableList de la base de datos
 
-                ObservableList<Empleado> empleados = mainWindowModel.getEmpleadosTabla();
+                ObservableList<Empleado> empleados = null;
+                try {
+                    empleados = mainWindowModel.getEmpleadosTabla();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.out.println("No se pudo cargar la tabla de empleados");
+                }
                 //Le pasamos los datos y el nombre de la tabla a la funcion de cargar la tabla de empleado
                 cargarTablaEmpleado(empleados, tablaCargar);
                 break;

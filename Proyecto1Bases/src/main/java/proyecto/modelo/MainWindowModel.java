@@ -25,7 +25,7 @@ public class MainWindowModel {
 
     public ArrayList<String> getListaTablas() throws SQLException {
 
-        ArrayList<String> listaTablas = this.oracleJBDC.getTablasUsuario();
+        ArrayList<String> listaTablas = this.oracleJBDC.getTablasUsuarioBaseDatos();
         System.out.println(listaTablas);
         return listaTablas;
     }
@@ -44,22 +44,22 @@ public class MainWindowModel {
 
     //Devuelve la lista de empleados, que trajo desde la base de datos
     //Para cargarlo en la tabla del view
-    public ObservableList<Empleado> getEmpleadosTabla (){
+    public ObservableList<Empleado> getEmpleadosTabla () throws SQLException {
 
-        Empleado empleado1 = new Empleado("5","6","Pastelero","Prueba1", "Prueba1","Rod","89898989");
-        Empleado empleado2 = new Empleado("6","7","Pastelero","Prueba1", "Prueba1","Rod","89898989");
-        Empleado empleado3 = new Empleado("7","7","Pastelero","Prueba1", "Prueba1","Rod","89898989");
-
-        ObservableList< Empleado > empleados = FXCollections.observableArrayList(); //Esta lista se debe obtener desde el OJBDC
-        empleados.add(empleado1);
-        empleados.add(empleado2);
-        empleados.add(empleado3);
+//        Empleado empleado1 = new Empleado("5","6","Pastelero","Prueba1", "Prueba1","Rod","89898989");
+//        Empleado empleado2 = new Empleado("6","7","Pastelero","Prueba1", "Prueba1","Rod","89898989");
+//        Empleado empleado3 = new Empleado("7","7","Pastelero","Prueba1", "Prueba1","Rod","89898989");
+//
+//        ObservableList< Empleado > empleados = FXCollections.observableArrayList(); //Esta lista se debe obtener desde el OJBDC
+//        empleados.add(empleado1);
+//        empleados.add(empleado2);
+//        empleados.add(empleado3);
 
         /*
         todo:
         Funcion para hacer la lista de empleados desde el OJBDC
          */
-        //ObservableList< Empleado > empleados =  oracleJBDC.getTablaEmpleado();
+        ObservableList< Empleado > empleados =  oracleJBDC.getTablaEmpleado();
 
         return empleados;
     }

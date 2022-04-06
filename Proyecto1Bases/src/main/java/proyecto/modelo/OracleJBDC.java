@@ -1,5 +1,8 @@
 package proyecto.modelo;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -132,6 +135,72 @@ public class OracleJBDC {
         }
     }
 
+
+
+    //Retorna lista de las tablas que el usuario tiene acceso
+    public ArrayList<String> getTablasUsuarioBaseDatos() throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null){
+            System.out.println("Trayendo las tablas del usuario de la base de datos");
+
+            Statement sentenciaProcedimiento = baseDatos.createStatement();
+            String gettablas = "SELECT table_name FROM user_tables";   //Acá no sé si debe ser un Stored procedure
+
+            ResultSet resultado = sentenciaProcedimiento.executeQuery(gettablas);
+
+            ArrayList<String> listaTablas = new ArrayList<>();
+
+            Empleado empleado = null;
+            while (resultado.next() ){
+                listaTablas.add(resultado.getString("TABLE_NAME"));
+            }
+            cerrarConexionBase(baseDatos, sentenciaProcedimiento, resultado);
+            return listaTablas;
+
+        }else {
+            return null;
+        }
+    }
+
+    //CRUD DE LAS TABLAS
+    //************ EMPLEADO //************ EMPLEADO //************ EMPLEADO //************ EMPLEADO
+
+    public ObservableList<Empleado> getTablaEmpleado () throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null){
+            System.out.println("Trayendo Empleados de tabla EMPLEADO");
+
+            Statement sentenciaSQL = baseDatos.createStatement();
+            String getEmpleadosSQL = "SELECT * FROM EMPLEADO";   //Acá no sé si debe ser un Stored procedure
+
+            ResultSet resultado = sentenciaSQL.executeQuery(getEmpleadosSQL);
+
+            ObservableList<Empleado> listaEmpleados = FXCollections.observableArrayList(); //Esta lista se debe obtener desde el OJBDC
+
+            while (resultado.next()){
+                Empleado empleado = new Empleado(resultado.getString("id_Empleado"),
+                        resultado.getString("id_sucursalfk"),
+                        resultado.getString("puesto_empleado"),
+                        resultado.getString("nombre_empleado"),
+                        resultado.getString("apellido1_empleado"),
+                        resultado.getString("apellido2_empleado"),
+                        resultado.getString("telefono_empleado")
+                );
+                listaEmpleados.add(empleado);
+            }
+
+            cerrarConexionBase(baseDatos, sentenciaSQL, resultado);
+            return listaEmpleados;
+
+        }else {
+            return null;
+        }
+
+    }
+
     //Retorna toda la info del empleado en un objeto empleado
     public Empleado getEmpleado(int idEmpleado) throws SQLException {
         Connection baseDatos = conectarBaseDatos();
@@ -151,7 +220,7 @@ public class OracleJBDC {
                         resultado.getString("apellido1_empleado"),
                         resultado.getString("apellido2_empleado"),
                         resultado.getString("telefono_empleado")
-                        );
+                );
             }
             cerrarConexionBase(baseDatos, sentenciaSQL, resultado);
             return empleado;
@@ -160,32 +229,4 @@ public class OracleJBDC {
         }
     }
 
-    //Retorna lista de las tablas que el usuario tiene acceso
-    public ArrayList<String> getTablasUsuario() throws SQLException {
-        Connection baseDatos = conectarBaseDatos();
-
-        if (baseDatos != null){
-            System.out.println("Trayendo las tablas del usuario de la base de datos");
-
-
-            Statement sentenciaProcedimiento = baseDatos.createStatement();
-            String gettablas = "SELECT table_name FROM user_tables";   //Acá no sé si debe ser un Stored procedure
-
-
-            ResultSet resultado = sentenciaProcedimiento.executeQuery(gettablas);
-
-
-            ArrayList<String> listaTablas = new ArrayList<>();
-
-            Empleado empleado = null;
-            while (resultado.next() ){
-                listaTablas.add(resultado.getString("TABLE_NAME"));
-            }
-            cerrarConexionBase(baseDatos, sentenciaProcedimiento, resultado);
-            return listaTablas;
-
-        }else {
-            return null;
-        }
-    }
 }
