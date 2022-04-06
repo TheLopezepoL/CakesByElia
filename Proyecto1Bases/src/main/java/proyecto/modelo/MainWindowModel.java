@@ -46,21 +46,16 @@ public class MainWindowModel {
     //Para cargarlo en la tabla del view
     public ObservableList<Empleado> getEmpleadosTabla () throws SQLException {
 
-//        Empleado empleado1 = new Empleado("5","6","Pastelero","Prueba1", "Prueba1","Rod","89898989");
-//        Empleado empleado2 = new Empleado("6","7","Pastelero","Prueba1", "Prueba1","Rod","89898989");
-//        Empleado empleado3 = new Empleado("7","7","Pastelero","Prueba1", "Prueba1","Rod","89898989");
-//
-//        ObservableList< Empleado > empleados = FXCollections.observableArrayList(); //Esta lista se debe obtener desde el OJBDC
-//        empleados.add(empleado1);
-//        empleados.add(empleado2);
-//        empleados.add(empleado3);
-
-        /*
-        todo:
-        Funcion para hacer la lista de empleados desde el OJBDC
-         */
         ObservableList< Empleado > empleados =  oracleJBDC.getTablaEmpleado();
-
         return empleados;
+    }
+
+    public void insertNuevoEmpleado(Empleado empleado) throws SQLException {
+        //Acá habría que rodearlo de un try catch y retornar true so lo logró, false si no.
+        oracleJBDC.insertEmpleado(empleado);
+    }
+
+    public void deleteEmpleado(int idEmpleado) throws SQLException {
+        oracleJBDC.deleteEmpleado(idEmpleado);
     }
 }

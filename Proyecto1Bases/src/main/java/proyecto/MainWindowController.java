@@ -20,6 +20,8 @@ import proyecto.modelo.Usuario;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
 
 public class MainWindowController {
 
@@ -116,6 +118,7 @@ public class MainWindowController {
                 break;
             case "btn_menu_actualizar":
                 System.out.println("Update de la fila seleccionada en la tabla");
+                actualizarElemento();
                 break;
             case "btn_menu_borrar":
                 System.out.println("Borrar la fila seleccionada en la tabla");
@@ -306,9 +309,17 @@ public class MainWindowController {
                 //Acá hay que llamar al tablewindowmodel que le diga al JBDC que elimine el elemento
                 // Que luego nos devuelva la tabla que acaba de modificar
                 //cargar la tabla de nuevo
-                Empleado empleadoAEliminar = ((TableView<Empleado>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
-                //Se manda a eliminar el elemento del empleado con el id
-                System.out.println("Eliminando Empleado con id "+ empleadoAEliminar.getId() + " y nombre " + empleadoAEliminar.getNombre());
+                try {
+                    Empleado empleadoAEliminar = ((TableView<Empleado>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    //Se manda a eliminar el elemento del empleado con el id
+                    System.out.println("Eliminando Empleado con id "+ empleadoAEliminar.getId() + " y nombre " + empleadoAEliminar.getNombre());
+
+                    mainWindowModel.deleteEmpleado( Integer.parseInt( empleadoAEliminar.getId() ) );  //ELIMINA EL EMPLEADO
+                    cargarTabla("EMPLEADO");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningún Empleado","De click sobre el empleado que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "SUCURSAL":
                 Sucursal sucursalaEliminar = ((TableView<Sucursal>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
@@ -408,6 +419,78 @@ public class MainWindowController {
         String tablaActual = mainWindowModel.getTablaActual();
         System.out.println("Insertar Nuevo Elemento en " + tablaActual);
 
+        TextInputDialog dialog = new TextInputDialog("Valores");
+        dialog.setTitle("Nuevo Elemento");
+        dialog.setContentText("Nuevo elemento: ");
+
+        dialog.setHeaderText("Ingrese los valores necesarios para la Tabla, separados por coma(,).");
+
+        // Traditional way to get the response value.
+
+        switch (mainWindowModel.getTablaActual()){
+            case "EMPLEADO":
+
+                dialog.setHeaderText("Ingrese idSucursal, puesto, nombre, apellido, apellido, telefono ");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String valoresEmpleado[] = result.get().split(",");
+
+                    try {
+                        //Crea el nuevo empleado
+                        Empleado nuevoEmpleado = new Empleado("0", valoresEmpleado[0], valoresEmpleado[1],
+                                valoresEmpleado[2], valoresEmpleado[3], valoresEmpleado[4], valoresEmpleado[5]);
+
+                        System.out.println("El nuevo elemento es " + nuevoEmpleado);
+                        mainWindowModel.insertNuevoEmpleado(nuevoEmpleado);
+                        cargarTabla("EMPLEADO"); //Vuelve a cargar la tabla para reflejar los cambios
+
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
+                break;
+            case "SUCURSAL":
+
+                //Se manda a actualizar el empleado al MainModelo
+                break;
+            case "PRODUCTO":
+                //cargarTablaProducto();
+                break;
+            case "CLIENTE":
+                //cargarTablaCliente();
+                break;
+            case "PEDIDO":
+                //cargarTablaPedido();
+                break;
+            case "BITACORA":
+                //cargarTablaBitacora();
+                break;
+            case "USUARIO":
+
+                //Se manda a actualizar el empleado al MainModelo
+                break;
+            case "INGREDIENTE":
+                //cargarTablaIngrediente();
+                break;
+            case "PROVEEDOR":
+                //cargarTablaProveedor();
+                break;
+            case "PRECIOS":
+                //cargarTablaPrecios();
+                break;
+            case "LISTAINGREDIENTES":
+                //cargarTablaListaIngredientes();
+                break;
+            case "INVENTARIOS":
+                //cargarTablaInventarios();
+                break;
+        }
+
        // ObservableList <TableColumn<Empleado,String>> columnasTablaActual = tableView_tablaActual.getColumns();
     }
 
@@ -424,4 +507,30 @@ public class MainWindowController {
         btn_menu_buscar.setText(textMenu);
     }
 
+    //Muestra una alerta al Usuario
+    // 1 = Información
+    // 2 = Error
+    // 3 = Confirmacion
+    public Alert mostrarAlerta(int tipoAlerta, String header, String Content){
+        Alert alerta;
+        switch (tipoAlerta){
+            case 1:
+                alerta = new Alert(Alert.AlertType.INFORMATION);
+                break;
+            case 2:
+                alerta = new Alert(Alert.AlertType.ERROR);
+                break;
+            case 3:
+                alerta = new Alert(Alert.AlertType.CONFIRMATION);
+                break;
+            default:
+                alerta = new Alert(Alert.AlertType.NONE);
+                break;
+        }
+        alerta.setTitle("Ooops!");
+        alerta.setHeaderText(header);
+        alerta.setContentText(Content);
+
+        return alerta;
+    }
 }

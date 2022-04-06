@@ -229,4 +229,46 @@ public class OracleJBDC {
         }
     }
 
+    public void insertEmpleado(Empleado empleado) throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Empleado en tabla EMPLEADO");
+
+
+            CallableStatement insertEmpleado = baseDatos.prepareCall("{call cud_pasteleria_pkg.createEmpleado_Proc(?,?,?,?,?,?)");
+
+            insertEmpleado.setInt(1, Integer.parseInt(empleado.getId_sucursal()));
+            insertEmpleado.setString(2, empleado.getPuesto());
+            insertEmpleado.setString(3, empleado.getNombre());
+            insertEmpleado.setString(4, empleado.getApellido1());
+            insertEmpleado.setString(5, empleado.getApellido2());
+            insertEmpleado.setString(6, empleado.getTelefono());
+
+            insertEmpleado.execute();
+
+            cerrarConexionBase(baseDatos, insertEmpleado);
+        }
+
+    }
+
+    public void deleteEmpleado(int idEmpleado) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Empleado en tabla EMPLEADO");
+
+
+            CallableStatement delEmpleado = baseDatos.prepareCall("{call cud_pasteleria_pkg.deleteEmpleado_Proc(?)");
+
+            delEmpleado.setInt(1, idEmpleado);
+            delEmpleado.execute();
+
+
+            cerrarConexionBase(baseDatos, delEmpleado);
+        }
+
+    }
+
 }
