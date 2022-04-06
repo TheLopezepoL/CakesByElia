@@ -69,11 +69,9 @@ public class OracleJBDC {
     private Connection conectarBaseDatos(  ){
         try {
             Connection conexion = DriverManager.getConnection(instanciaURL, instanciaUsuario, instaciaContrasenia);  //Hace la conexion con la base de datos
-            DatabaseMetaData metaData = conexion.getMetaData();
 
-            String productName = metaData.getDatabaseProductName();
-            System.out.println("Información de la Base de Datos");
-            System.out.println("Product Name: " + productName);
+            System.out.println("Base de Datos Conectada");
+
 
             return  conexion;
 
@@ -89,6 +87,7 @@ public class OracleJBDC {
             pConeccion.close();
             pSentencia.close();
             pResultado.close();
+            System.out.println("Base de Datos Desconectada");
 
             return true;
         }catch (SQLException e) {
@@ -102,7 +101,7 @@ public class OracleJBDC {
         try {
             pConeccion.close();
             pSentencia.close();
-
+            System.out.println("Base de Datos Desconectada");
             return true;
         }catch (SQLException e) {
             System.err.println(e.getClass().getName() + " : " + e.getMessage());
@@ -112,8 +111,10 @@ public class OracleJBDC {
 
     //Valida las credenciales con la base de datos y retorna el id del empleado
     public int validar_credenciales(String pUsuario, String pContrasenia) throws SQLException {
+
         try {
             Connection conBase = conectarBaseDatos();
+            System.out.println("Validando credenciales en la Base de Datos");
             CallableStatement validarLogin_fn = conBase.prepareCall("{? = call CONSULTAS_PASTELERIA_PKG.valida_login(?,?)}");
 
             validarLogin_fn.registerOutParameter(1, Types.NUMERIC);
