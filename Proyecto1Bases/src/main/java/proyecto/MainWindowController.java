@@ -153,15 +153,7 @@ public class MainWindowController {
             case "EMPLEADO":
                 //Acá debemos pedir al MainWindowModel la lista de ObservableList de la base de datos
 
-                Empleado empleado1 = new Empleado("5","6","Pastelero","Prueba1", "Prueba1","Rod","89898989");
-                Empleado empleado2 = new Empleado("6","7","Pastelero","Prueba1", "Prueba1","Rod","89898989");
-                Empleado empleado3 = new Empleado("7","7","Pastelero","Prueba1", "Prueba1","Rod","89898989");
-
-                ObservableList< Empleado > empleados = FXCollections.observableArrayList(); //Esta lista se debe obtener desde el OJBDC
-                empleados.add(empleado1);
-                empleados.add(empleado2);
-                empleados.add(empleado3);
-
+                ObservableList<Empleado> empleados = mainWindowModel.getEmpleadosTabla();
                 //Le pasamos los datos y el nombre de la tabla a la funcion de cargar la tabla de empleado
                 cargarTablaEmpleado(empleados, tablaCargar);
                 break;

@@ -79,6 +79,7 @@ public class LogInMainController {
         escena = new Scene(root);                                                //Crea la escena
         escenario.setScene(escena);                                              //Coloca la escena en el escenario
         escenario.show();                                                        //Muestra la escena
+        escenario.centerOnScreen();     //Lo coloca en el centro de la pantalla
 
     }
 

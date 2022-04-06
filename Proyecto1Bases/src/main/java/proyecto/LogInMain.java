@@ -16,6 +16,7 @@ public class LogInMain extends Application {
         stage.setTitle("Mana's Cakes, DB System!");
         stage.setScene(scene);
         stage.show();
+        stage.centerOnScreen();
     }
 
     public static void main(String[] args) {
