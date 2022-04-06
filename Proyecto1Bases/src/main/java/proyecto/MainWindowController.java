@@ -3,6 +3,7 @@ package proyecto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import proyecto.modelo.Empleado;
 import proyecto.modelo.MainWindowModel;
 import proyecto.modelo.Sucursal;
@@ -126,6 +128,7 @@ public class MainWindowController {
                 break;
             case"btn_CerrarSesion":
                 System.out.println("Cerrando Sesion");
+                cerrarSesion();
                 break;
             default:
 
@@ -547,4 +550,17 @@ public class MainWindowController {
 
         return alerta;
     }
+
+    //Termina la ejecución del programa
+    private void cerrarSesion(){
+
+        if(mostrarAlerta(3, "Está a punto de Cerrar Sesión", "¿Quiere Salir?").showAndWait().get() == ButtonType.OK){
+            Stage escenario = (Stage) borderPane_centerTable.getScene().getWindow();
+            System.out.println("Cerrando Sesion");
+            escenario.close();
+        }
+    }
 }
+
+
+
