@@ -58,4 +58,8 @@ public class MainWindowModel {
     public void deleteEmpleado(int idEmpleado) throws SQLException {
         oracleJBDC.deleteEmpleado(idEmpleado);
     }
+
+    public void updateempleado(Empleado empleado) throws SQLException {
+        oracleJBDC.updateEmpleado(empleado);
+    }
 }

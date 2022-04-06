@@ -271,4 +271,27 @@ public class OracleJBDC {
 
     }
 
+    public void updateEmpleado( Empleado empleado) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Empleado en tabla EMPLEADO");
+
+
+            CallableStatement updateEmpleado = baseDatos.prepareCall("{call cud_pasteleria_pkg.updateEmpleado_Proc(?,?,?,?,?,?,?)");
+
+            updateEmpleado.setInt(1, Integer.parseInt(empleado.getId()));
+            updateEmpleado.setInt(2, Integer.parseInt(empleado.getId_sucursal()));
+            updateEmpleado.setString(3, empleado.getNombre());
+            updateEmpleado.setString(4, empleado.getApellido1());
+            updateEmpleado.setString(5, empleado.getApellido2());
+            updateEmpleado.setString(6, empleado.getTelefono());
+            updateEmpleado.setString(7, empleado.getPuesto());
+
+            updateEmpleado.execute();
+
+            cerrarConexionBase(baseDatos, updateEmpleado);
+        }
+    }
+
 }

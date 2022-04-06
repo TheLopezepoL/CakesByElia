@@ -368,8 +368,22 @@ public class MainWindowController {
             case "EMPLEADO":
                 //Hay que crear un alert view con textfields para cada columna de la tabla actual
                 //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
-                Empleado empleadoAActualizar = ((TableView<Empleado>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
-                System.out.println("Nuevos Valores del empleado " + empleadoAActualizar);
+                try{
+                    Empleado empleadoAActualizar = ((TableView<Empleado>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores del empleado " + empleadoAActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar el Empleado con los siguientes datos", empleadoAActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        // ... user chose OK
+                        mainWindowModel.updateempleado(empleadoAActualizar);
+                    }
+
+                    cargarTabla("EMPLEADO"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar Empleado", "Debe tener seleccionado el empleado cuando rpesiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
+
                 break;
             case "SUCURSAL":
                 Sucursal sucursalActualizar = ((TableView<Sucursal>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
