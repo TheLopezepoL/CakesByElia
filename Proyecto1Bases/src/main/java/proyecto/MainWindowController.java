@@ -15,6 +15,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import proyecto.modelo.Empleado;
 import proyecto.modelo.MainWindowModel;
+import proyecto.modelo.Sucursal;
+import proyecto.modelo.Usuario;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -142,7 +144,6 @@ public class MainWindowController {
         }catch (Exception e){
             System.out.println("Error al Eliminar tabla, No existe la tabla");
         }
-
 
         //Aca sabemos el nombre de la tabla a cargar
 
@@ -312,7 +313,9 @@ public class MainWindowController {
                 System.out.println("Eliminando Empleado con id "+ empleadoAEliminar.getId() + " y nombre " + empleadoAEliminar.getNombre());
                 break;
             case "SUCURSAL":
-                //cargarTablaSucursal();
+                Sucursal sucursalaEliminar = ((TableView<Sucursal>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                System.out.println("Eliminando Sucursal con id " + sucursalaEliminar.getId());
+                //Se manda a eliminar el elemento  id
                 break;
             case "PRODUCTO":
                 //cargarTablaProducto();
@@ -327,7 +330,9 @@ public class MainWindowController {
                 //cargarTablaBitacora();
                 break;
             case "USUARIO":
-                //cargarTablaUsuario();
+                Usuario usuarioEliminar = ((TableView<Usuario>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                System.out.println("Eliminando Sucursal con id " + usuarioEliminar.getId());
+                //Se manda a eliminar el elemento  id
                 break;
             case "INGREDIENTE":
                 //cargarTablaIngrediente();
@@ -358,7 +363,9 @@ public class MainWindowController {
                 System.out.println("Nuevos Valores del empleado " + empleadoAActualizar);
                 break;
             case "SUCURSAL":
-                //cargarTablaSucursal();
+                Sucursal sucursalActualizar = ((TableView<Sucursal>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                System.out.println("Nuevos Valores de la Sucursal " + sucursalActualizar);
+                //Se manda a actualizar el empleado al MainModelo
                 break;
             case "PRODUCTO":
                 //cargarTablaProducto();
@@ -373,7 +380,10 @@ public class MainWindowController {
                 //cargarTablaBitacora();
                 break;
             case "USUARIO":
-                //cargarTablaUsuario();
+                Usuario usuarioActualizar = ((TableView<Usuario>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                System.out.println("Nuevos Valores del Usuario " + usuarioActualizar);
+                //Se manda a actualizar el empleado al MainModelo
+
                 break;
             case "INGREDIENTE":
                 //cargarTablaIngrediente();
@@ -397,15 +407,17 @@ public class MainWindowController {
     private void insertarNuevo (){
         //Saber primero que tabla es la que tenemos en la vista
         //Para sacar la lista de columnas
-        System.out.println("Insertar Nuevo");
+        String tablaActual = mainWindowModel.getTablaActual();
+        System.out.println("Insertar Nuevo Elemento en " + tablaActual);
 
        // ObservableList <TableColumn<Empleado,String>> columnasTablaActual = tableView_tablaActual.getColumns();
     }
 
     //Cuando se Presiona el boton de buscar acá se hace la lógica de la búsqueda
     private void busquedaTabla(String pBusqueda){
+        String tablaActual = mainWindowModel.getTablaActual();
         String busqueda = tf_menu_buscar.getText();
-        System.out.println("Buscando " + busqueda + " por: " + pBusqueda);
+        System.out.println("Buscando " + busqueda + " por: " + pBusqueda +" en la tabla: " + tablaActual);
     }
 
     //Cambia la busqueda con el menu button
