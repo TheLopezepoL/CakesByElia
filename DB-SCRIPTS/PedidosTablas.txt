@@ -144,3 +144,7 @@ END;
 CREATE OR REPLACE PROCEDURE elmPedido (pID INT, pFecha DATE)
 BEGIN
     DELETE FROM Pedido
+    WHERE id_Pedido = pID 
+     
+    EXEC auxElmPedido(pID, pFecha) 
+END;
