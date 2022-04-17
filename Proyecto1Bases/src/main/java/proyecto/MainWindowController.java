@@ -429,7 +429,6 @@ public class MainWindowController {
         }
     }
 
-
     private void insertarNuevo (){
         //Saber primero que tabla es la que tenemos en la vista
         //Para sacar la lista de columnas
@@ -511,6 +510,7 @@ public class MainWindowController {
        // ObservableList <TableColumn<Empleado,String>> columnasTablaActual = tableView_tablaActual.getColumns();
     }
 
+
     //Cuando se Presiona el boton de buscar acá se hace la lógica de la búsqueda
     private void busquedaTabla(String pBusqueda){
         String tablaActual = mainWindowModel.getTablaActual();
@@ -523,6 +523,7 @@ public class MainWindowController {
         String textMenu = ((MenuItem) e.getSource() ).getText();
         btn_menu_buscar.setText(textMenu);
     }
+
 
     //Muestra una alerta al Usuario
     // 1 = Información

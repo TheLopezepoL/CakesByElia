@@ -62,4 +62,5 @@ public class MainWindowModel {
     public void updateempleado(Empleado empleado) throws SQLException {
         oracleJBDC.updateEmpleado(empleado);
     }
+
 }

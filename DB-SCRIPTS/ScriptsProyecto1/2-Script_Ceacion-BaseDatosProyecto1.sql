@@ -257,20 +257,20 @@ CREATE OR REPLACE PACKAGE CUD_PASTELERIA_PKG AS
     PROCEDURE updateInventariosProc(pid_SucursalFK NUMBER, pId_IngredienteFK NUMBER, pCantidad_Inventarios NUMBER);
     PROCEDURE deleteInventarios_Proc(pid_SucursalFK NUMBER, pId_IngredienteFK NUMBER);
     --Bitacora
-    PROCEDURE agrBitacora (pID_Pedido INT, pTipo_Cambio VARCHAR2, pFecha DATE);
-    PROCEDURE bitAgrPedido (pID INT, pFecha DATE);
-    PROCEDURE bitModPedido (pID INT, pFecha DATE);
-    PROCEDURE bitElmPedido (pID INT, pFecha DATE);
+    PROCEDURE agrBitacora (pID_Pedido NUMBER, pTipo_Cambio VARCHAR2, pFecha DATE);
+    PROCEDURE bitAgrPedido (pID NUMBER, pFecha DATE);
+    PROCEDURE bitModPedido (pID NUMBER, pFecha DATE);
+    PROCEDURE bitElmPedido (pID NUMBER, pFecha DATE);
     --Cliente
-    PROCEDURE auxElmCliente(pID_Cliente INT);
+    PROCEDURE auxElmCliente(pID_Cliente NUMBER);
     PROCEDURE agrCliente (pNombre VARCHAR2, pTelefono VARCHAR2);
-    PROCEDURE modCliente (pID INT, p pNombre VARCHAR2, pTelefono VARCHAR2);
-    PROCEDURE elmCliente (pID INT);
+    PROCEDURE modCliente (pID NUMBER, pNombre VARCHAR2, pTelefono VARCHAR2);
+    PROCEDURE elmCliente (pID NUMBER);
     --Pedido
-    FUNCTION obtUltimoIDPedido();
-    agrPedido (pID_Producto INT, pID_Sucursal INT, pID_Cliente INT, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2, pFecha DATE);
-    modPedido (pID INT, pID_Producto INT, pID_Sucursal INT, pID_Cliente INT, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2, pFecha DATE);
-    elmPedido (pID INT, pFecha DATE);
+    FUNCTION obtUltimoIDPedido RETURN NUMBER;
+    PROCEDURE agrPedido (pID_Producto NUMBER, pID_Sucursal NUMBER, pID_Cliente NUMBER, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2, pFecha DATE);
+    PROCEDURE modPedido (pID NUMBER, pID_Producto NUMBER, pID_Sucursal NUMBER, pID_Cliente NUMBER, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2, pFecha DATE);
+    PROCEDURE elmPedido (pID NUMBER, pFecha DATE);
     
 
 END CUD_PASTELERIA_PKG;
@@ -570,98 +570,105 @@ CREATE OR REPLACE PACKAGE BODY CUD_PASTELERIA_PKG AS
     END deleteInventarios_Proc; 
 
     --***************************   Procedimientos CRUD para Bitacora ***************************--
-    CREATE OR REPLACE FUNCTION obtUltimoIDPedido
-    RETURN INT
-    AS maxID INT
+    FUNCTION obtUltimoIDPedido
+    RETURN NUMBER
+    IS
+    maxID NUMBER;
     BEGIN
-        SELECT MAX(id_Pedido) INTO maxID
-        FROM Pedido;]
+        SELECT MAX(id_Pedido) INTO maxID FROM Pedido;
     
         RETURN maxID;
     END;
 
-    CREATE OR REPLACE PROCEDURE agrBitacora (pID_Pedido INT, pTipo_Cambio VARCHAR2, pFecha DATE)
+    PROCEDURE agrBitacora (pID_Pedido NUMBER, pTipo_Cambio VARCHAR2, pFecha DATE)
+    IS
     BEGIN
-         INSERT INTO Bitacora(id_PedidoFK, tipo_Cambio, fecha)
-         VALUES(pID_Pedido, pTipo_Cambio, pFecha);
+         INSERT INTO Bitacora(id_PedidoFK, tipo_Cambio, fecha) VALUES(pID_Pedido, pTipo_Cambio, pFecha);
+    END;
+                
+    PROCEDURE bitAgrPedido (pID NUMBER, pFecha DATE)
+     IS
+     BEGIN
+         agrBitacora(pID, 'INSERT', pFecha);
      END;
 
-
-     CREATE OR REPLACE PROCEDURE bitAgrPedido (pID INT, pFecha DATE)
+     PROCEDURE bitModPedido (pID NUMBER, pFecha DATE)
+     IS
      BEGIN
-         EXEC agragrBitacora(pID, 'INSERT', pFecha);
-     END;
-
-     CREATE OR REPLACE PROCEDURE bitModPedido (pID INT, pFecha DATE)
-     BEGIN
-         EXEC agragrBitacora(pID, 'UPDATE', pFecha);
+         agrBitacora(pID, 'UPDATE', pFecha);
       END;
 
-      CREATE OR REPLACE PROCEDURE bitElmPedido (pID INT, pFecha DATE)
+      PROCEDURE bitElmPedido (pID NUMBER, pFecha DATE)
+      IS
       BEGIN
-         EXEC agragrBitacora(pID, 'DELETE', pFecha);
+         agrBitacora(pID, 'DELETE', pFecha);
       END;
 
     --***************************   Procedimientos CRUD para Cliente ***************************--
 
-    CREATE OR REPLACE PROCEDURE auxElmCliente(pID_Cliente INT)
+    PROCEDURE auxElmCliente(pID_Cliente NUMBER)
+    IS
     BEGIN
          UPDATE Pedido
-         SET id_Cliente = NULL
-         WHERE id_Cliente = pID_Cliente;
+         SET id_ClienteFK = NULL
+         WHERE id_ClienteFK = pID_Cliente;
      END;
 
 
 
-     CREATE OR REPLACE PROCEDURE agrCliente (pNombre VARCHAR2, pTelefono VARCHAR2)
+     PROCEDURE agrCliente (pNombre VARCHAR2, pTelefono VARCHAR2)
+     IS
      BEGIN
          INSERT INTO Cliente(nombre, telefono)
          VALUES(pNombre, pTelefono);
      END;
 
-     CREATE OR REPLACE PROCEDURE modCliente (pID INT, p pNombre VARCHAR2, pTelefono VARCHAR2)
+     PROCEDURE modCliente (pID NUMBER, pNombre VARCHAR2, pTelefono VARCHAR2)
+     IS
      BEGIN
          UPDATE Cliente
          SET nombre = pNombre, telefono = pTelefono
          WHERE id_Cliente = pID;
      END;
 
-     CREATE OR REPLACE PROCEDURE elmCliente (pID INT)
+     PROCEDURE elmCliente (pID NUMBER)
+     IS
      BEGIN
          DELETE FROM Cliente
          WHERE id_Cliente = pID;
     
-         EXEC auxElmCliente(pID);
+         auxElmCliente(pID);
      END;
 
     --***************************   Procedimientos CRUD para Pedido ***************************--
 
-     CREATE OR REPLACE PROCEDURE agrPedido (pID_Producto INT, pID_Sucursal INT, pID_Cliente INT, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2, pFecha DATE)
-     DEFINE
-         lastID INT;
+     PROCEDURE agrPedido (pID_Producto NUMBER, pID_Sucursal NUMBER, pID_Cliente NUMBER, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2, pFecha DATE)
+     IS
+         lastID NUMBER;
      BEGIN
          INSERT INTO Pedido(id_ProductoFK, id_SucursalFK, id_ClienteFK, fecha_Pedido, fecha_Entrega, direccion_Entrega)
-         VALUES(pID_Producto INT, pID_Sucursal INT, pID_Cliente INT, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2);
+         VALUES(pID_Producto, pID_Sucursal, pID_Cliente, pFecha_Pedido, pFecha_Entrega, pDireccion_Entrega);
     
          lastID := obtUltimoIDPedido;
-         EXEC bitAgrPedido(lastID, pFecha);
+         bitAgrPedido(lastID, pFecha);
      END;
 
-     CREATE OR REPLACE PROCEDURE modPedido (pID INT, pID_Producto INT, pID_Sucursal INT, pID_Cliente INT, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2, pFecha DATE)
+     PROCEDURE modPedido (pID NUMBER, pID_Producto NUMBER, pID_Sucursal NUMBER, pID_Cliente NUMBER, pFecha_Pedido DATE, pFecha_Entrega DATE, pDireccion_Entrega VARCHAR2, pFecha DATE)
+     IS
      BEGIN
          UPDATE Pedido
          SET id_ProductoFK = pID_Producto, id_SucursalFK = pID_Sucursal, id_ClienteFK = pID_Cliente, fecha_Pedido = pFecha_Pedido, fecha_Entrega = pFecha_Entrega, direccion_Entrega = pDireccion_Entrega
          WHERE id_Pedido = pID;
     
-         EXEC bitModPedido(pID, pFecha);
+         bitModPedido(pID, pFecha);
      END;
 
-     CREATE OR REPLACE PROCEDURE elmPedido (pID INT, pFecha DATE)
+     PROCEDURE elmPedido (pID NUMBER, pFecha DATE)
+     IS
      BEGIN
          DELETE FROM Pedido
-         WHERE id_Pedido = pID 
-     
-         EXEC auxElmPedido(pID, pFecha) 
+         WHERE id_Pedido = pID;
+         bitElmPedido(pID, pFecha);
      END;
 
 END CUD_PASTELERIA_PKG;
