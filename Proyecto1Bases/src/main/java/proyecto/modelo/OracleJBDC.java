@@ -811,7 +811,79 @@ public class OracleJBDC {
 
     }
 
+    //************ INVENTARIO //************ INVENTARIO //************ INVENTARIO //************ INVENTARIO ************ //
+    //getTabla()
 
+    /**
+     * Inserta un nuevo inventario en la base de datos
+     * @param inventario inventario a guardar en la base de datos
+     * @throws SQLException
+     */
+    public void insertInventario(Inventario inventario) throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Inventario en tabla INVENTARIO");
+
+
+            CallableStatement insertInventario = baseDatos.prepareCall("{call cud_pasteleria_pkg.createInventarios_Proc(?,?,?)");
+
+            insertInventario.setInt(1, Integer.parseInt(inventario.getId_sucursal()));
+            insertInventario.setInt(2, Integer.parseInt(inventario.getId_ingrediente()));
+            insertInventario.setInt(3, Integer.parseInt(inventario.getCantidad()));
+
+            insertInventario.execute();
+
+            cerrarConexionBase(baseDatos, insertInventario);
+        }
+    }
+
+    /**
+     * Modifica un inventario en la base de datos
+     * @param inventario inventario a modificar
+     * @throws SQLException
+     */
+    public void updateInventario( Inventario inventario) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Modificando Inventario");
+
+            CallableStatement updateInventario = baseDatos.prepareCall("{call cud_pasteleria_pkg.updateInventariosProc(?,?,?)");
+
+            updateInventario.setInt(1, Integer.parseInt(inventario.getId_sucursal()));
+            updateInventario.setInt(2, Integer.parseInt(inventario.getId_ingrediente()));
+            updateInventario.setInt(3, Integer.parseInt(inventario.getCantidad()));
+
+            updateInventario.execute();
+            cerrarConexionBase(baseDatos, updateInventario);
+        }
+    }
+
+    /**
+     * Elimina un Inventari de la base de datos con su id
+     * @param idSucursal
+     * @param idIngrediente
+     * @throws SQLException
+     */
+    public void deleteInventario(int idSucursal, int idIngrediente ) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Eliminando Inventario");
+
+
+            CallableStatement delInventario = baseDatos.prepareCall("{call cud_pasteleria_pkg.deleteInventarios_Proc(?,?)");
+
+            delInventario.setInt(1, idSucursal);
+            delInventario.setInt(2, idIngrediente);
+            delInventario.execute();
+
+            cerrarConexionBase(baseDatos, delInventario);
+        }
+
+    }
 
 
 

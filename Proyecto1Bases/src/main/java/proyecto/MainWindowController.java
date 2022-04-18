@@ -408,13 +408,33 @@ public class MainWindowController {
                 }
                 break;
             case "PRECIOS":
-                //cargarTablaPrecios();
+                try {
+                    Precios preciosEliminar = ((TableView<Precios>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    //Se manda a eliminar el elemento del precio con el id
+                    System.out.println("Eliminando Precios con idIngredinte "+ preciosEliminar.getId_ingrediente() + " y idProveedor " + preciosEliminar.getId_proveedor());
+
+                    mainWindowModel.deletePrecios( Integer.parseInt( preciosEliminar.getId_ingrediente() ), Integer.parseInt( preciosEliminar.getId_proveedor() ) );  //ELIMINA EL EMPLEADO
+                    cargarTabla("PRECIOS");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningún Precio","De click sobre el Precio que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "LISTAINGREDIENTES":
                 //cargarTablaListaIngredientes();
                 break;
             case "INVENTARIOS":
-                //cargarTablaInventarios();
+                try {
+                    Inventario inventarioEliminar = ((TableView<Inventario>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    //Se manda a eliminar el elemento del precio con el id
+                    System.out.println("Eliminando Inventario con idSucursal "+ inventarioEliminar.getId_sucursal() + " y idIngrediente " + inventarioEliminar.getId_ingrediente());
+
+                    mainWindowModel.deleteInventario( Integer.parseInt( inventarioEliminar.getId_sucursal() ), Integer.parseInt( inventarioEliminar.getId_ingrediente() ) );  //ELIMINA EL EMPLEADO
+                    cargarTabla("INVENTARIOS");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningún Inventario","De click sobre el Inventario que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
         }
 
@@ -549,13 +569,38 @@ public class MainWindowController {
                 }
                 break;
             case "PRECIOS":
-                //cargarTablaPrecios();
+                try{
+                    Precios preciosActualizar = ((TableView<Precios>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores del Precio " + preciosActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar el Precio con los siguientes datos", preciosActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        mainWindowModel.updatePrecios(preciosActualizar);
+                    }
+
+                    cargarTabla("PRECIOS"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar el Precio", "Debe tener seleccionado el Precio cuando presiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "LISTAINGREDIENTES":
                 //cargarTablaListaIngredientes();
                 break;
             case "INVENTARIOS":
-                //cargarTablaInventarios();
+                try{
+                    Inventario inventarioActualizar = ((TableView<Inventario>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores del Inventario " + inventarioActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar el Inventario con los siguientes datos", inventarioActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        mainWindowModel.updateInventario(inventarioActualizar);
+                    }
+                    cargarTabla("INVENTARIOS"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar el Inventario", "Debe tener seleccionado el Inventario cuando presiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
         }
     }
@@ -725,13 +770,45 @@ public class MainWindowController {
                 }
                 break;
             case "PRECIOS":
-                //cargarTablaPrecios();
+                dialog.setHeaderText("Ingrese IdIngrediente, IDProveedor, Precio, Cantidad");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String[] valoresPrecios = result.get().split(",");
+                    try {
+                        //Crea el nuevo empleado
+                        mainWindowModel.insertNuevoPrecios(valoresPrecios);
+                        cargarTabla("PRECIOS"); //Vuelve a cargar la tabla para reflejar los cambios
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
                 break;
             case "LISTAINGREDIENTES":
                 //cargarTablaListaIngredientes();
                 break;
             case "INVENTARIOS":
-                //cargarTablaInventarios();
+                dialog.setHeaderText("Ingrese idSucursal, idIngrediente, Cantidad");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String[] valoresInventario = result.get().split(",");
+                    try {
+                        //Crea el nuevo empleado
+                        mainWindowModel.insertNuevoInventario(valoresInventario);
+                        cargarTabla("INVENTARIOS"); //Vuelve a cargar la tabla para reflejar los cambios
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
                 break;
         }
 

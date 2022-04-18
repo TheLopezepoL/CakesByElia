@@ -3,6 +3,7 @@ package proyecto.modelo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.net.Inet4Address;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -155,6 +156,35 @@ public class MainWindowModel {
         oracleJBDC.deleteProveedor(idProveedor);
     }
 
+    //************ PRECIOS //************ PRECIOS //************ PRECIOS //************ PRECIOS ************ //
+    public void insertNuevoPrecios( String[] infoPrecios ) throws SQLException  {
+        Precios nuevoPrecios = new Precios(infoPrecios[0], infoPrecios[1], infoPrecios[2],infoPrecios[3]);
+        System.out.println("El nuevo elemento es " + nuevoPrecios);
+        oracleJBDC.insertPrecios(nuevoPrecios);
+    }
+
+    public void updatePrecios( Precios preciosMod ) throws SQLException  {
+        oracleJBDC.updatePrecios(preciosMod);
+    }
+
+    public void deletePrecios(int idIngrediente, int idProveedor ) throws SQLException  {
+        oracleJBDC.deletePrecios(idIngrediente,idProveedor);
+    }
+
+    //************ INVENTARIO //************ INVENTARIO //************ INVENTARIO //************ INVENTARIO ************ //
+    public void insertNuevoInventario( String[] infoInventario ) throws SQLException  {
+        Inventario nuevoInventario = new Inventario(infoInventario[0], infoInventario[1], infoInventario[2]);
+        System.out.println("El nuevo elemento es " + nuevoInventario);
+        oracleJBDC.insertInventario(nuevoInventario);
+    }
+
+    public void updateInventario( Inventario inventarioMod ) throws SQLException  {
+        oracleJBDC.updateInventario(inventarioMod);
+    }
+
+    public void deleteInventario(int idSucursal, int idIngrediente ) throws SQLException  {
+        oracleJBDC.deleteInventario(idSucursal, idIngrediente);
+    }
 
 }
 
