@@ -421,7 +421,17 @@ public class MainWindowController {
                 }
                 break;
             case "LISTAINGREDIENTES":
-                //cargarTablaListaIngredientes();
+                try {
+                    ListaIngredientes listaIngredientesEliminar = ((TableView<ListaIngredientes>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    //Se manda a eliminar el elemento del precio con el id
+                    System.out.println("Eliminando Lista Ingredientes con idProducto "+ listaIngredientesEliminar.getId_producto() + " y idIngrediente " + listaIngredientesEliminar.getId_ingrediente());
+
+                    mainWindowModel.deleteListaIngredientes( Integer.parseInt( listaIngredientesEliminar.getId_producto() ), Integer.parseInt( listaIngredientesEliminar.getId_ingrediente() ) );  //ELIMINA EL EMPLEADO
+                    cargarTabla("LISTAINGREDIENTES");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningún Lista Ingredientes","De click sobre Lista ingredientes que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "INVENTARIOS":
                 try {
@@ -585,7 +595,19 @@ public class MainWindowController {
                 }
                 break;
             case "LISTAINGREDIENTES":
-                //cargarTablaListaIngredientes();
+                try{
+                    ListaIngredientes listaIngredientesActualizar = ((TableView<ListaIngredientes>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores del Lista Ingredientes " + listaIngredientesActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar Lista Ingredientes con los siguientes datos", listaIngredientesActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        mainWindowModel.updateListaIngredientes(listaIngredientesActualizar);
+                    }
+                    cargarTabla("LISTAINGREDIENTES"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar la lista de Ingredientes", "Debe tener seleccionado la lista de ingredientes cuando presiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "INVENTARIOS":
                 try{
@@ -789,7 +811,23 @@ public class MainWindowController {
                 }
                 break;
             case "LISTAINGREDIENTES":
-                //cargarTablaListaIngredientes();
+                dialog.setHeaderText("Ingrese idProducto, idIngrediente, Cantidad");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String[] valoresListaIngredientes = result.get().split(",");
+                    try {
+                        //Crea el nuevo empleado
+                        mainWindowModel.insertNuevoListaIngredientes(valoresListaIngredientes);
+                        cargarTabla("LISTAINGREDIENTES"); //Vuelve a cargar la tabla para reflejar los cambios
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
                 break;
             case "INVENTARIOS":
                 dialog.setHeaderText("Ingrese idSucursal, idIngrediente, Cantidad");

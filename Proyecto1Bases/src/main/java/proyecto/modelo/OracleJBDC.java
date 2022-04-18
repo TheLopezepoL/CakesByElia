@@ -886,5 +886,81 @@ public class OracleJBDC {
     }
 
 
+    //************ LISTA_INGREDIENTES //************ LISTA_INGREDIENTES //************ LISTA_INGREDIENTES //************ LISTA_INGREDIENTES ************ //
+    //getTabla()
+
+    /**
+     * Inserta un nuevo listaIngredientes en la base de datos
+     * @param listaIngredientes listaIngredientes a guardar en la base de datos
+     * @throws SQLException
+     */
+    public void insertListaIngredientes(ListaIngredientes listaIngredientes) throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Lista Ingredientes en tabla LISTAINGREDIENTES");
+
+
+            CallableStatement insertListaIngredientes = baseDatos.prepareCall("{call cud_pasteleria_pkg.createListaIngredientes_Proc(?,?,?)");
+
+            insertListaIngredientes.setInt(1, Integer.parseInt(listaIngredientes.getId_producto()));
+            insertListaIngredientes.setInt(2, Integer.parseInt(listaIngredientes.getId_ingrediente()));
+            insertListaIngredientes.setInt(3, Integer.parseInt(listaIngredientes.getCantidad()));
+
+            insertListaIngredientes.execute();
+
+            cerrarConexionBase(baseDatos, insertListaIngredientes);
+        }
+    }
+
+    /**
+     * Modifica un listaIngredientes en la base de datos
+     * @param listaIngredientes listaIngredientes a modificar
+     * @throws SQLException
+     */
+    public void updateListaIngredientes( ListaIngredientes listaIngredientes) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Modificando Lista Ingredientes");
+
+            CallableStatement updateListaIngredientes = baseDatos.prepareCall("{call cud_pasteleria_pkg.updateListaIngredientes_Proc(?,?,?)");
+
+            updateListaIngredientes.setInt(1, Integer.parseInt(listaIngredientes.getId_producto()));
+            updateListaIngredientes.setInt(2, Integer.parseInt(listaIngredientes.getId_ingrediente()));
+            updateListaIngredientes.setInt(3, Integer.parseInt(listaIngredientes.getCantidad()));
+
+            updateListaIngredientes.execute();
+            cerrarConexionBase(baseDatos, updateListaIngredientes);
+        }
+    }
+
+    /**
+     * Elimina un Lista Ingrediente de la base de datos con su id
+     * @param idProducto
+     * @param idIngrediente
+     * @throws SQLException
+     */
+    public void deleteListaIngredientes(int idProducto, int idIngrediente ) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Eliminando Lista Ingredientes");
+
+
+            CallableStatement delListaIngredientes = baseDatos.prepareCall("{call cud_pasteleria_pkg.deleteListaIngredientes_Proc(?,?)");
+
+            delListaIngredientes.setInt(1, idProducto);
+            delListaIngredientes.setInt(2, idIngrediente);
+            delListaIngredientes.execute();
+
+            cerrarConexionBase(baseDatos, delListaIngredientes);
+        }
+
+    }
+
+
+
 
 }

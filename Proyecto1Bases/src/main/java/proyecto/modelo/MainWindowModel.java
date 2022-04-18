@@ -186,5 +186,20 @@ public class MainWindowModel {
         oracleJBDC.deleteInventario(idSucursal, idIngrediente);
     }
 
+    //************ LISTA_INGREDIENTES //************ LISTA_INGREDIENTES //************ LISTA_INGREDIENTES //************ LISTA_INGREDIENTES ************ //
+    public void insertNuevoListaIngredientes( String[] infoListaIngredientes ) throws SQLException  {
+        ListaIngredientes nuevoListaIngredientes = new ListaIngredientes(infoListaIngredientes[0], infoListaIngredientes[1], infoListaIngredientes[2]);
+        System.out.println("El nuevo elemento es " + nuevoListaIngredientes);
+        oracleJBDC.insertListaIngredientes(nuevoListaIngredientes);
+    }
+
+    public void updateListaIngredientes( ListaIngredientes listaIngredientesMod ) throws SQLException  {
+        oracleJBDC.updateListaIngredientes(listaIngredientesMod);
+    }
+
+    public void deleteListaIngredientes(int idProducto, int idIngrediente ) throws SQLException  {
+        oracleJBDC.deleteListaIngredientes(idProducto, idIngrediente);
+    }
+
 }
 
