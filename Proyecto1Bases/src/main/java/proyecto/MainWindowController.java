@@ -376,8 +376,10 @@ public class MainWindowController {
                 }
                 break;
             case "BITACORA":
-                //cargarTablaBitacora();
+                mostrarAlerta(2, "No se pueden borrar elementos de la bitacora","La bitacora se actualiza cuando hay cambios en los pedidos.").showAndWait();
+                cargarTabla("BITACORA"); //Vuelve a cargar la tabla
                 break;
+
             case "USUARIO":
 
                 try {
@@ -550,7 +552,8 @@ public class MainWindowController {
                 }
                 break;
             case "BITACORA":
-                //cargarTablaBitacora();
+                mostrarAlerta(2, "No se pueden modificar elementos de la bitacora","La bitacora se actualiza cuando hay cambios en los pedidos.").showAndWait();
+                cargarTabla("BITACORA"); //Vuelve a cargar la tabla
                 break;
             case "USUARIO":
                 try{
@@ -769,7 +772,8 @@ public class MainWindowController {
                 }
                 break;
             case "BITACORA":
-                //cargarTablaBitacora();
+                mostrarAlerta(2, "No se pueden Insertar elementos de la bitacora","La bitacora se actualiza cuando hay cambios en los pedidos.").showAndWait();
+                cargarTabla("BITACORA"); //Vuelve a cargar la tabla
                 break;
             case "USUARIO":
 
