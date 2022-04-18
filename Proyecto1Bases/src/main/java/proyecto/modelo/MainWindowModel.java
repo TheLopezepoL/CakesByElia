@@ -201,5 +201,22 @@ public class MainWindowModel {
         oracleJBDC.deleteListaIngredientes(idProducto, idIngrediente);
     }
 
+    //************ PEDIDO //************ PEDIDO //************ PEDIDO //************ PEDIDO ************ //
+    public void insertNuevoPedido( String[] infoPedido ) throws SQLException  {
+        Pedido nuevoPedido = new Pedido("0",infoPedido[0], infoPedido[1], infoPedido[2],infoPedido[3],infoPedido[4],infoPedido[5]);
+        System.out.println("El nuevo elemento es " + nuevoPedido);
+        oracleJBDC.insertPedido(nuevoPedido);
+    }
+
+    public void updatePedido( Pedido pedido ) throws SQLException  {
+        oracleJBDC.updatePedido(pedido);
+    }
+
+    public void deletePedido(int idPedido ) throws SQLException  {
+        oracleJBDC.deletePedido(idPedido);
+    }
+
+
+
 }
 

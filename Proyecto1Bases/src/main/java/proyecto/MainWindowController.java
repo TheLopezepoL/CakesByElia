@@ -363,7 +363,17 @@ public class MainWindowController {
                 }
                 break;
             case "PEDIDO":
-                //cargarTablaPedido();
+                try {
+                    Pedido pedidoEliminar = ((TableView<Pedido>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    //Se manda a eliminar el elemento del empleado con el id
+                    System.out.println("Eliminando Pedido con id "+ pedidoEliminar.getId() + " y fecha pedido " + pedidoEliminar.getFechaPedido());
+
+                    mainWindowModel.deletePedido( Integer.parseInt( pedidoEliminar.getId() ) );  //ELIMINA EL EMPLEADO
+                    cargarTabla("PEDIDO");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningún Pedido","De click sobre el pedido que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "BITACORA":
                 //cargarTablaBitacora();
@@ -381,7 +391,6 @@ public class MainWindowController {
                 }
                 break;
             case "INGREDIENTE":
-
                 try {
                     Ingrediente ingredienteEliminar = ((TableView<Ingrediente>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
                     //Se manda a eliminar el elemento del empleado con el id
@@ -525,7 +534,20 @@ public class MainWindowController {
                 break;
 
             case "PEDIDO":
-                //cargarTablaPedido();
+                try{
+                    Pedido pedidoActualizar = ((TableView<Pedido>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores del cliente " + pedidoActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar el Pedido con los siguientes datos", pedidoActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        mainWindowModel.updatePedido(pedidoActualizar);
+                    }
+
+                    cargarTabla("PEDIDO"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar Pedido", "Debe tener seleccionado el pedido cuando presiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "BITACORA":
                 //cargarTablaBitacora();
@@ -728,7 +750,23 @@ public class MainWindowController {
                 break;
 
             case "PEDIDO":
-                //cargarTablaPedido();
+                dialog.setHeaderText("Ingrese idProducto, idSucursal, idCliente, fechaPedido(yyyy-mm-dd), entrega(yyyy-mm-dd), direccion de entrega");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String[] valoresPedido = result.get().split(",");
+                    try {
+                        //Crea el nuevo empleado
+                        mainWindowModel.insertNuevoPedido(valoresPedido);
+                        cargarTabla("PEDIDO"); //Vuelve a cargar la tabla para reflejar los cambios
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
                 break;
             case "BITACORA":
                 //cargarTablaBitacora();

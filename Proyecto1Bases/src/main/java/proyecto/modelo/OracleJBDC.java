@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 //Class Singleton
@@ -961,6 +962,96 @@ public class OracleJBDC {
     }
 
 
+    //************ PEDIDO //************ PEDIDO //************ PEDIDO //************ PEDIDO ************ //
+    //getTabla()
+
+    /**
+     * Inserta un nuevo pedido en la base de datos
+     * @param pedido pedido a guardar en la base de datos
+     * @throws SQLException
+     */
+    public void insertPedido(Pedido pedido) throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Pedido en tabla PEDIDO");
 
 
+            CallableStatement insertPedido = baseDatos.prepareCall("{call cud_pasteleria_pkg.agrPedido(?,?,?,?,?,?,?)");
+
+            insertPedido.setInt(1, Integer.parseInt(pedido.getId_producto()));
+            insertPedido.setInt(2, Integer.parseInt(pedido.getId_sucursal()));
+            insertPedido.setInt(3, Integer.parseInt(pedido.getId_cliente()));
+
+            insertPedido.setDate(4, Date.valueOf(pedido.getFechaPedido()));   //"YYYY-MM-DD"
+            insertPedido.setDate(5, Date.valueOf(pedido.getFechaEntrega()));
+
+            insertPedido.setString(6, pedido.getDireccionEntrega());
+
+            insertPedido.setDate(7, Date.valueOf(pedido.getFechaPedido()));   //La fecha en la que se hizo el pedido, para la bitacora
+
+
+            insertPedido.execute();
+
+            cerrarConexionBase(baseDatos, insertPedido);
+        }
+    }
+
+    /**
+     * Modifica un pedido en la base de datos
+     * @param pedido pedido a modificar
+     * @throws SQLException
+     */
+    public void updatePedido( Pedido pedido) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Modificando Pedido");
+
+            CallableStatement updatePedido = baseDatos.prepareCall("{call cud_pasteleria_pkg.modPedido(?,?,?,?,?,?,?,?)");
+
+            LocalDateTime dtm = LocalDateTime.now(); //Fecha Actual
+
+            updatePedido.setInt(1, Integer.parseInt(pedido.getId()));
+            updatePedido.setInt(2, Integer.parseInt(pedido.getId_producto()));
+            updatePedido.setInt(3, Integer.parseInt(pedido.getId_sucursal()));
+            updatePedido.setInt(4, Integer.parseInt(pedido.getId_cliente()));
+
+            updatePedido.setDate(5, Date.valueOf(pedido.getFechaPedido()));   //"YYYY-MM-DD"
+            updatePedido.setDate(6, Date.valueOf(pedido.getFechaEntrega()));
+
+            updatePedido.setString(7, pedido.getDireccionEntrega());
+
+            updatePedido.setDate(8, Date.valueOf(dtm.toLocalDate()));   //La fecha en la que se hizo el pedido, para la bitacora
+
+            updatePedido.execute();
+            cerrarConexionBase(baseDatos, updatePedido);
+        }
+    }
+
+    /**
+     * Elimina un  idPedido de la base de datos con su id
+     * @param idPedido
+     * @throws SQLException
+     */
+    public void deletePedido(int idPedido ) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Eliminando Pedido");
+
+
+            CallableStatement delPedido = baseDatos.prepareCall("{call cud_pasteleria_pkg.elmPedido(?,?)");
+
+            LocalDateTime dtm = LocalDateTime.now(); //Fecha Actual
+
+            delPedido.setInt(1, idPedido);
+            delPedido.setDate(2, Date.valueOf(dtm.toLocalDate()));   //La fecha en la que se hizo el pedido, para la bitacora
+
+            delPedido.execute();
+
+            cerrarConexionBase(baseDatos, delPedido);
+        }
+    }
 }
