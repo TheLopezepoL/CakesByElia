@@ -3,10 +3,14 @@ package proyecto.modelo;
 public class Precios {
     private String id_ingrediente;
     private String id_proveedor;
+    private String precios;
+    private String cantidad;
 
-    public Precios(String id_ingrediente, String id_proveedor) {
+    public Precios(String id_ingrediente, String id_proveedor, String precios, String cantidad) {
         this.id_ingrediente = id_ingrediente;
         this.id_proveedor = id_proveedor;
+        this.precios = precios;
+        this.cantidad = cantidad;
     }
 
     public String getId_ingrediente() {
@@ -25,11 +29,29 @@ public class Precios {
         this.id_proveedor = id_proveedor;
     }
 
-    @java.lang.Override
-    public java.lang.String toString() {
+    public String getPrecios() {
+        return precios;
+    }
+
+    public void setPrecios(String precios) {
+        this.precios = precios;
+    }
+
+    public String getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(String cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    @Override
+    public String toString() {
         return "Precios{" +
                 "id_ingrediente='" + id_ingrediente + '\'' +
                 ", id_proveedor='" + id_proveedor + '\'' +
+                ", precios='" + precios + '\'' +
+                ", cantidad='" + cantidad + '\'' +
                 '}';
     }
 }

@@ -395,7 +395,17 @@ public class MainWindowController {
                 }
                 break;
             case "PROVEEDOR":
-                //cargarTablaProveedor();
+                try {
+                    Proveedor proveedorEliminar = ((TableView<Proveedor>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    //Se manda a eliminar el elemento del empleado con el id
+                    System.out.println("Eliminando Proveedor con id "+ proveedorEliminar.getId() + " y nombre " + proveedorEliminar.getNombre());
+
+                    mainWindowModel.deleteProveedor( Integer.parseInt( proveedorEliminar.getId() ) );  //ELIMINA EL EMPLEADO
+                    cargarTabla("PROVEEDOR");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningún Proveedor","De click sobre el Proveedor que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "PRECIOS":
                 //cargarTablaPrecios();
@@ -523,7 +533,20 @@ public class MainWindowController {
                 }
                 break;
             case "PROVEEDOR":
-                //cargarTablaProveedor();
+                try{
+                    Proveedor proveedorActualizar = ((TableView<Proveedor>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores del Proveedor " + proveedorActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar el Proveedor con los siguientes datos", proveedorActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        mainWindowModel.updateProveedor(proveedorActualizar);
+                    }
+
+                    cargarTabla("PROVEEDOR"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar el Proveedor", "Debe tener seleccionado el Proveedor cuando presiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "PRECIOS":
                 //cargarTablaPrecios();
@@ -683,7 +706,23 @@ public class MainWindowController {
                 }
                 break;
             case "PROVEEDOR":
-                //cargarTablaProveedor();
+                dialog.setHeaderText("Ingrese Nombre, Direccion");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String[] valoresProveedor = result.get().split(",");
+                    try {
+                        //Crea el nuevo empleado
+                        mainWindowModel.insertNuevoProveedor(valoresProveedor);
+                        cargarTabla("PROVEEDOR"); //Vuelve a cargar la tabla para reflejar los cambios
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
                 break;
             case "PRECIOS":
                 //cargarTablaPrecios();

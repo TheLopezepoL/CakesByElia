@@ -140,6 +140,21 @@ public class MainWindowModel {
         oracleJBDC.deleteIngrediente(idIngrediente);
     }
 
+    //************ PROVEEDOR //************ PROVEEDOR //************ PROVEEDOR //************ PROVEEDOR ************ //
+    public void insertNuevoProveedor( String[] infoProveedor ) throws SQLException  {
+        Proveedor nuevoProveedor = new Proveedor("0", infoProveedor[0], infoProveedor[1]);
+        System.out.println("El nuevo elemento es " + nuevoProveedor);
+        oracleJBDC.insertProveedor(nuevoProveedor);
+    }
+
+    public void updateProveedor( Proveedor proveedorMod ) throws SQLException  {
+        oracleJBDC.updateProveedor(proveedorMod);
+    }
+
+    public void deleteProveedor( int idProveedor ) throws SQLException  {
+        oracleJBDC.deleteProveedor(idProveedor);
+    }
+
 
 }
 

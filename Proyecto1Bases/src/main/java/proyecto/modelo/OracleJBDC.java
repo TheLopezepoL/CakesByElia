@@ -662,4 +662,157 @@ public class OracleJBDC {
     }
 
 
+    //************ PROVEEDOR //************ PROVEEDOR //************ PROVEEDOR //************ PROVEEDOR ************ //
+    //getTabla()
+
+    /**
+     * Inserta un nuevo proveedor en la base de datos
+     * @param proveedor proveedor a guardar en la base de datos
+     * @throws SQLException
+     */
+    public void insertProveedor(Proveedor proveedor) throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Proveedor en tabla PROVEEDOR");
+
+
+            CallableStatement insertProveedor = baseDatos.prepareCall("{call cud_pasteleria_pkg.createProveedor_Proc(?,?)");
+
+            insertProveedor.setString(1, proveedor.getNombre());
+            insertProveedor.setString(2, proveedor.getDireccion());
+
+            insertProveedor.execute();
+
+            cerrarConexionBase(baseDatos, insertProveedor);
+        }
+    }
+
+    /**
+     * Modifica un proveedor en la base de datos
+     * @param proveedor proveedor a modificar
+     * @throws SQLException
+     */
+    public void updateProveedor( Proveedor proveedor) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Modificando Proveedor");
+
+            CallableStatement updateProveedor = baseDatos.prepareCall("{call cud_pasteleria_pkg.updateProveedor_Proc(?,?,?)");
+
+            updateProveedor.setInt(1, Integer.parseInt(proveedor.getId()));
+            updateProveedor.setString(2, proveedor.getNombre());
+            updateProveedor.setString(3, proveedor.getDireccion());
+
+            updateProveedor.execute();
+            cerrarConexionBase(baseDatos, updateProveedor);
+        }
+    }
+
+    /**
+     * Elimina un proveedor de la base de datos con su id
+     * @param idProveedor
+     * @throws SQLException
+     */
+    public void deleteProveedor(int idProveedor) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Eliminando Proveedor");
+
+
+            CallableStatement delProveedor = baseDatos.prepareCall("{call cud_pasteleria_pkg.deleteIngrediente_Proc(?)");
+
+            delProveedor.setInt(1, idProveedor);
+            delProveedor.execute();
+
+            cerrarConexionBase(baseDatos, delProveedor);
+        }
+
+    }
+
+
+    //************ PRECIOS //************ PRECIOS //************ PRECIOS //************ PRECIOS ************ //
+    //getTabla()
+
+    /**
+     * Inserta un nuevo precios en la base de datos
+     * @param precios precios a guardar en la base de datos
+     * @throws SQLException
+     */
+    public void insertPrecios(Precios precios) throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Precios en tabla PRECIOS");
+
+
+            CallableStatement insertPrecios = baseDatos.prepareCall("{call cud_pasteleria_pkg.createPrecios_Proc(?,?,?,?)");
+
+            insertPrecios.setInt(1, Integer.parseInt(precios.getId_proveedor()));
+            insertPrecios.setInt(2, Integer.parseInt(precios.getId_ingrediente()));
+            insertPrecios.setInt(3, Integer.parseInt(precios.getPrecios()));
+            insertPrecios.setInt(4, Integer.parseInt(precios.getCantidad()));
+
+
+            insertPrecios.execute();
+
+            cerrarConexionBase(baseDatos, insertPrecios);
+        }
+    }
+
+    /**
+     * Modifica un precios en la base de datos
+     * @param precios precios a modificar
+     * @throws SQLException
+     */
+    public void updatePrecios( Precios precios) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Modificando Precios");
+
+            CallableStatement updatePrecios = baseDatos.prepareCall("{call cud_pasteleria_pkg.updatepNombre_Precios_Proc(?,?,?,?,?)");
+
+            updatePrecios.setInt(1, Integer.parseInt(precios.getId_proveedor()));
+            updatePrecios.setInt(2, Integer.parseInt(precios.getId_ingrediente()));
+            updatePrecios.setInt(3, Integer.parseInt(precios.getPrecios()));
+            updatePrecios.setInt(4, Integer.parseInt(precios.getCantidad()));
+
+            updatePrecios.execute();
+            cerrarConexionBase(baseDatos, updatePrecios);
+        }
+    }
+
+    /**
+     * Elimina un Precio de la base de datos con su id
+     * @param idProveedor
+     * @param idIngrediente
+     * @throws SQLException
+     */
+    public void deletePrecios(int idIngrediente, int idProveedor) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Eliminando Precios");
+
+
+            CallableStatement delPrecios = baseDatos.prepareCall("{call cud_pasteleria_pkg.deletePrecios_Proc(?,?)");
+
+            delPrecios.setInt(1, idIngrediente);
+            delPrecios.setInt(2, idProveedor);
+            delPrecios.execute();
+
+            cerrarConexionBase(baseDatos, delPrecios);
+        }
+
+    }
+
+
+
+
+
 }
