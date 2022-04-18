@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
 //Class Singleton
 public class OracleJBDC {
@@ -298,6 +297,11 @@ public class OracleJBDC {
 
     //getTabla()
 
+    /**
+     * Inserta un nuevo cliente en la base de datos
+     * @param cliente El cliente a guardar en la base de datos
+     * @throws SQLException
+     */
     public void insertCliente(Cliente cliente) throws SQLException {
 
         Connection baseDatos = conectarBaseDatos();
@@ -306,23 +310,356 @@ public class OracleJBDC {
             System.out.println("Insertando Empleado en tabla EMPLEADO");
 
 
-            CallableStatement insertEmpleado = baseDatos.prepareCall("{call cud_pasteleria_pkg.createEmpleado_Proc(?,?,?,?,?,?)");
+            CallableStatement insertCliente = baseDatos.prepareCall("{call cud_pasteleria_pkg.agrCliente(?,?)");
 
-            insertEmpleado.setInt(1, Integer.parseInt(empleado.getId_sucursal()));
-            insertEmpleado.setString(2, empleado.getPuesto());
-            insertEmpleado.setString(3, empleado.getNombre());
-            insertEmpleado.setString(4, empleado.getApellido1());
-            insertEmpleado.setString(5, empleado.getApellido2());
-            insertEmpleado.setString(6, empleado.getTelefono());
+            insertCliente.setString(1, cliente.getNombre());
+            insertCliente.setString(2, cliente.getTelefono());
+            insertCliente.execute();
 
-            insertEmpleado.execute();
+            cerrarConexionBase(baseDatos, insertCliente);
+        }
+    }
 
-            cerrarConexionBase(baseDatos, insertEmpleado);
+    /**
+     * Modifica un cliente en la base de datos
+     * @param cliente CLiente a modificar
+     * @throws SQLException
+     */
+    public void updateCliente( Cliente cliente) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Modificando Cliente");
+
+            CallableStatement updateCliente = baseDatos.prepareCall("{call cud_pasteleria_pkg.modCliente(?,?,?)");
+
+            updateCliente.setInt(1, Integer.parseInt(cliente.getId()));
+            updateCliente.setString(2, cliente.getNombre());
+            updateCliente.setString(3, cliente.getTelefono());
+
+            updateCliente.execute();
+            cerrarConexionBase(baseDatos, updateCliente);
+        }
+    }
+
+    /**
+     * Elimina un cliente de la base de datos con su id
+     * @param idCliente
+     * @throws SQLException
+     */
+    public void deleteCliente(int idCliente) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Empleado en tabla EMPLEADO");
+
+
+            CallableStatement delCliente = baseDatos.prepareCall("{call cud_pasteleria_pkg.elmCliente(?)");
+
+            delCliente.setInt(1, idCliente);
+            delCliente.execute();
+
+
+            cerrarConexionBase(baseDatos, delCliente);
         }
 
     }
 
 
+    //************ SUCURSAL //************ SUCURSAL //************ SUCURSAL //************ SUCURSAL ************ //
+
+    //getTabla()
+
+    /**
+     * Inserta un nuevo Sucursal en la base de datos
+     * @param sucursal Sucursal a guardar en la base de datos
+     * @throws SQLException
+     */
+    public void insertSucursal(Sucursal sucursal) throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Sucursal en tabla SUCURSAL");
+
+
+            CallableStatement insertSucursal = baseDatos.prepareCall("{call cud_pasteleria_pkg.createSucursal_Proc(?,?)");
+
+            insertSucursal.setString(1, sucursal.getTelefono());
+            insertSucursal.setString(2, sucursal.getDireccion());
+            insertSucursal.execute();
+
+            cerrarConexionBase(baseDatos, insertSucursal);
+        }
+    }
+
+    /**
+     * Modifica un Sucursal en la base de datos
+     * @param sucursal Sucursal a modificar
+     * @throws SQLException
+     */
+    public void updateSucursal( Sucursal sucursal) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Modificando Sucursal");
+
+            CallableStatement updateSucursal = baseDatos.prepareCall("{call cud_pasteleria_pkg.updateSucursal_Proc(?,?,?)");
+
+            updateSucursal.setInt(1, Integer.parseInt(sucursal.getId()));
+            updateSucursal.setString(2, sucursal.getTelefono());
+            updateSucursal.setString(3, sucursal.getDireccion());
+
+            updateSucursal.execute();
+            cerrarConexionBase(baseDatos, updateSucursal);
+        }
+    }
+
+    /**
+     * Elimina una Sucursal de la base de datos con su id
+     * @param idSucursal
+     * @throws SQLException
+     */
+    public void deleteSucursal(int idSucursal) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Eliminando Sucursal");
+
+
+            CallableStatement delSucursal = baseDatos.prepareCall("{call cud_pasteleria_pkg.deleteSucursal_Proc(?)");
+
+            delSucursal.setInt(1, idSucursal);
+            delSucursal.execute();
+
+
+            cerrarConexionBase(baseDatos, delSucursal);
+        }
+
+    }
+
+    //************ PRODUCTO //************ PRODUCTO //************ PRODUCTO //************ PRODUCTO ************ //
+
+    //getTabla()
+
+    /**
+     * Inserta un nuevo Producto en la base de datos
+     * @param producto Producto a guardar en la base de datos
+     * @throws SQLException
+     */
+    public void insertProducto(Producto producto) throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Producto en tabla PRODUCTO");
+
+
+            CallableStatement insertProducto = baseDatos.prepareCall("{call cud_pasteleria_pkg.createProducto_Proc(?,?,?)");
+
+            insertProducto.setString(1, producto.getNombre());
+            insertProducto.setString(2, producto.getDescripcion());
+            insertProducto.setString(3, producto.getReceta());
+
+            insertProducto.execute();
+
+            cerrarConexionBase(baseDatos, insertProducto);
+        }
+    }
+
+    /**
+     * Modifica un Producto en la base de datos
+     * @param producto producto a modificar
+     * @throws SQLException
+     */
+    public void updateProducto( Producto producto) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Modificando Producto");
+
+            CallableStatement updateProducto = baseDatos.prepareCall("{call cud_pasteleria_pkg.updateProducto_Proc(?,?,?,?)");
+
+            updateProducto.setInt(1, Integer.parseInt(producto.getId()));
+            updateProducto.setString(2, producto.getNombre());
+            updateProducto.setString(3, producto.getDescripcion());
+            updateProducto.setString(4, producto.getReceta());
+
+            updateProducto.execute();
+            cerrarConexionBase(baseDatos, updateProducto);
+        }
+    }
+
+    /**
+     * Elimina una Producto de la base de datos con su id
+     * @param idProducto
+     * @throws SQLException
+     */
+    public void deleteProducto(int idProducto) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Eliminando Producto");
+
+
+            CallableStatement delProducto = baseDatos.prepareCall("{call cud_pasteleria_pkg.deleteProducto_Proc(?)");
+
+            delProducto.setInt(1, idProducto);
+            delProducto.execute();
+
+
+            cerrarConexionBase(baseDatos, delProducto);
+        }
+
+    }
+
+
+    //************ USUARIO //************ USUARIO //************ USUARIO //************ USUARIO ************ //
+    //getTabla()
+
+    /**
+     * Inserta un nuevo Usuario en la base de datos
+     * @param usuario Usuario a guardar en la base de datos
+     * @throws SQLException
+     */
+    public void insertUsuario(Usuario usuario) throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Usuario en tabla USUARIO");
+
+
+            CallableStatement insertUsuario = baseDatos.prepareCall("{call cud_pasteleria_pkg.createUsuario_Proc(?,?,?)");
+
+            insertUsuario.setInt(1, Integer.parseInt(usuario.getId_empleado()));
+            insertUsuario.setString(1, usuario.getUsuario());
+            insertUsuario.setString(2, usuario.getContrasenia());
+
+
+            insertUsuario.execute();
+
+            cerrarConexionBase(baseDatos, insertUsuario);
+        }
+    }
+
+    /**
+     * Modifica un Usuario en la base de datos
+     * @param usuario producto a modificar
+     * @throws SQLException
+     */
+    public void updateUsuario( Usuario usuario) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Modificando Producto");
+
+            CallableStatement updateUsuario = baseDatos.prepareCall("{call cud_pasteleria_pkg.updateUsuario_Proc(?,?,?)");
+
+            updateUsuario.setInt(1, Integer.parseInt(usuario.getId()));
+            updateUsuario.setString(2, usuario.getUsuario());
+            updateUsuario.setString(3, usuario.getContrasenia());
+
+            updateUsuario.execute();
+            cerrarConexionBase(baseDatos, updateUsuario);
+        }
+    }
+
+    /**
+     * Elimina un Usuario de la base de datos con su id
+     * @param idUsuario
+     * @throws SQLException
+     */
+    public void deleteUsuario(int idUsuario) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Eliminando Usuario");
+
+
+            CallableStatement delUsuario = baseDatos.prepareCall("{call cud_pasteleria_pkg.deleteUsuario_Proc(?)");
+
+            delUsuario.setInt(1, idUsuario);
+            delUsuario.execute();
+
+
+            cerrarConexionBase(baseDatos, delUsuario);
+        }
+
+    }
+
+
+    //************ INGREDIENTE //************ INGREDIENTE //************ INGREDIENTE //************ INGREDIENTE ************ //
+    //getTabla()
+
+    /**
+     * Inserta un nuevo ingrediente en la base de datos
+     * @param ingrediente ingreidnete a guardar en la base de datos
+     * @throws SQLException
+     */
+    public void insertIngrediente(Ingrediente ingrediente) throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Insertando Ingrediente en tabla Ingrediente");
+
+
+            CallableStatement insertIngrediente = baseDatos.prepareCall("{call cud_pasteleria_pkg.createIngrediente_Proc(?,?)");
+
+            insertIngrediente.setString(1, ingrediente.getNombre());
+            insertIngrediente.setString(2, ingrediente.getMedida());
+
+            insertIngrediente.execute();
+
+            cerrarConexionBase(baseDatos, insertIngrediente);
+        }
+    }
+
+    /**
+     * Modifica un ingrediente en la base de datos
+     * @param ingrediente ingredinete a modificar
+     * @throws SQLException
+     */
+    public void updateIngrediente( Ingrediente ingrediente) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Modificando Ingrediente");
+
+            CallableStatement updateIngrediente = baseDatos.prepareCall("{call cud_pasteleria_pkg.updatepNombre_Ingrediente_Proc(?,?,?)");
+
+            updateIngrediente.setInt(1, Integer.parseInt(ingrediente.getId()));
+            updateIngrediente.setString(2, ingrediente.getNombre());
+            updateIngrediente.setString(3, ingrediente.getMedida());
+
+            updateIngrediente.execute();
+            cerrarConexionBase(baseDatos, updateIngrediente);
+        }
+    }
+
+    /**
+     * Elimina un Ingrediente de la base de datos con su id
+     * @param idIngrediente
+     * @throws SQLException
+     */
+    public void deleteIngrediente(int idIngrediente) throws SQLException {
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Eliminando Ingrediente");
+
+
+            CallableStatement delIngrediente = baseDatos.prepareCall("{call cud_pasteleria_pkg.deleteIngrediente_Proc(?)");
+
+            delIngrediente.setInt(1, idIngrediente);
+            delIngrediente.execute();
+
+
+            cerrarConexionBase(baseDatos, delIngrediente);
+        }
+
+    }
 
 
 }

@@ -34,10 +34,10 @@ public class MainWindowModel {
         return tablaActual;
     }
 
+
     public void setTablaActual(String tablaActual) {
         this.tablaActual = tablaActual;
     }
-
 
 
     //Crud de tablas
@@ -63,4 +63,83 @@ public class MainWindowModel {
         oracleJBDC.updateEmpleado(empleado);
     }
 
+
+    //************ Cliente //************ Cliente //************ Cliente //************ Cliente ************ //
+
+    public void insertNuevoCliente( String[] infoCliente ) throws SQLException  {
+        Cliente nuevoCliente = new Cliente("0", infoCliente[0], infoCliente[1]);
+        System.out.println("El nuevo elemento es " + nuevoCliente);
+        oracleJBDC.insertCliente(nuevoCliente);
+    }
+
+    public void updateCliente( Cliente clienteMod ) throws SQLException  {
+        oracleJBDC.updateCliente(clienteMod);
+    }
+
+    public void deleteCliente( int id_cliente_del ) throws SQLException  {
+        oracleJBDC.deleteCliente(id_cliente_del);
+    }
+
+    //************ SUCURSAL //************ SUCURSAL //************ SUCURSAL //************ SUCURSAL ************ //
+    public void insertNuevoSucursal( String[] infoSucursal ) throws SQLException  {
+        Sucursal nuevaSucursal = new Sucursal("0", infoSucursal[0], infoSucursal[1]);
+        System.out.println("El nuevo elemento es " + nuevaSucursal);
+        oracleJBDC.insertSucursal(nuevaSucursal);
+    }
+
+    public void updateSucursal( Sucursal sucursalMod ) throws SQLException  {
+        oracleJBDC.updateSucursal(sucursalMod);
+    }
+
+    public void deleteSucursal( int idSucursal ) throws SQLException  {
+        oracleJBDC.deleteSucursal(idSucursal);
+    }
+
+    //************ PRODUCTO //************ PRODUCTO //************ PRODUCTO //************ PRODUCTO ************ //
+    public void insertNuevoProducto( String[] infoProducto ) throws SQLException  {
+        Producto nuevoProducto = new Producto("0", infoProducto[0], infoProducto[1], infoProducto[2]);
+        System.out.println("El nuevo elemento es " + nuevoProducto);
+        oracleJBDC.insertProducto(nuevoProducto);
+    }
+
+    public void updateProducto( Producto productoMod ) throws SQLException  {
+        oracleJBDC.updateProducto(productoMod);
+    }
+
+    public void deleteProducto( int idProducto ) throws SQLException  {
+        oracleJBDC.deleteProducto(idProducto);
+    }
+
+    //************ USUARIO //************ USUARIO //************ USUARIO //************ USUARIO ************ //
+    public void insertNuevoUsuario( String[] infoUsuario ) throws SQLException  {
+        Usuario nuevoUsuario = new Usuario("0", infoUsuario[0], infoUsuario[1], infoUsuario[2]);
+        System.out.println("El nuevo elemento es " + nuevoUsuario);
+        oracleJBDC.insertUsuario(nuevoUsuario);
+    }
+
+    public void updateUsuario( Usuario usuarioMod ) throws SQLException  {
+        oracleJBDC.updateUsuario(usuarioMod);
+    }
+
+    public void deleteUsuario( int idUsuario ) throws SQLException  {
+        oracleJBDC.deleteUsuario(idUsuario);
+    }
+
+    //************ INGREDIENTE //************ INGREDIENTE //************ INGREDIENTE //************ INGREDIENTE ************ //
+    public void insertNuevoIngrediente( String[] infoIngrediente ) throws SQLException  {
+        Ingrediente nuevoIngrediente = new Ingrediente("0", infoIngrediente[0], infoIngrediente[1]);
+        System.out.println("El nuevo elemento es " + nuevoIngrediente);
+        oracleJBDC.insertIngrediente(nuevoIngrediente);
+    }
+
+    public void updateIngrediente( Ingrediente ingredienteMod ) throws SQLException  {
+        oracleJBDC.updateIngrediente(ingredienteMod);
+    }
+
+    public void deleteIngrediente( int idIngrediente ) throws SQLException  {
+        oracleJBDC.deleteIngrediente(idIngrediente);
+    }
+
+
 }
+

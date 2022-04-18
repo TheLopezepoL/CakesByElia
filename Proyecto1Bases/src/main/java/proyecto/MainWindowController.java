@@ -15,10 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import proyecto.modelo.Empleado;
-import proyecto.modelo.MainWindowModel;
-import proyecto.modelo.Sucursal;
-import proyecto.modelo.Usuario;
+import proyecto.modelo.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -325,15 +322,45 @@ public class MainWindowController {
                 }
                 break;
             case "SUCURSAL":
-                Sucursal sucursalaEliminar = ((TableView<Sucursal>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
-                System.out.println("Eliminando Sucursal con id " + sucursalaEliminar.getId());
-                //Se manda a eliminar el elemento  id
+                try {
+                    Sucursal sucursalEliminar = ((TableView<Sucursal>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    //Se manda a eliminar el elemento del empleado con el id
+                    System.out.println("Eliminando Sucursal con id "+ sucursalEliminar.getId() + " y direccion " + sucursalEliminar.getDireccion());
+
+                    mainWindowModel.deleteSucursal( Integer.parseInt( sucursalEliminar.getId() ) );  //ELIMINA EL elemento
+                    cargarTabla("SUCURSAL");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningúna Sucursal o es posible que tenga empleados asociados y no se pueda eliminar","De click sobre la Sucursal que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
+
             case "PRODUCTO":
-                //cargarTablaProducto();
+                try {
+                    Producto productoEliminar = ((TableView<Producto>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    //Se manda a eliminar el elemento del empleado con el id
+                    System.out.println("Eliminando Producto con id "+ productoEliminar.getId() + " y nombre " + productoEliminar.getNombre());
+
+                    mainWindowModel.deleteProducto( Integer.parseInt( productoEliminar.getId() ) );  //ELIMINA EL elemento
+                    cargarTabla("PRODUCTO");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningún Producto","De click sobre el Producto que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "CLIENTE":
-                //cargarTablaCliente();
+
+                try {
+                    Cliente clienteAEliminar = ((TableView<Cliente>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    //Se manda a eliminar el elemento del empleado con el id
+                    System.out.println("Eliminando Cliente con id "+ clienteAEliminar.getId() + " y nombre " + clienteAEliminar.getNombre());
+
+                    mainWindowModel.deleteCliente( Integer.parseInt( clienteAEliminar.getId() ) );  //ELIMINA EL EMPLEADO
+                    cargarTabla("CLIENTE");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningún Cliente","De click sobre el cliente que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "PEDIDO":
                 //cargarTablaPedido();
@@ -342,12 +369,30 @@ public class MainWindowController {
                 //cargarTablaBitacora();
                 break;
             case "USUARIO":
-                Usuario usuarioEliminar = ((TableView<Usuario>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
-                System.out.println("Eliminando Sucursal con id " + usuarioEliminar.getId());
-                //Se manda a eliminar el elemento  id
+
+                try {
+                    Usuario usuarioEliminar = ((TableView<Usuario>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Eliminando Usuario con id " + usuarioEliminar.getId());
+                    mainWindowModel.deleteUsuario( Integer.parseInt( usuarioEliminar.getId() ) );  //ELIMINA EL EMPLEADO
+                    cargarTabla("USUARIO");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningún Usuario","De click sobre el usuario que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "INGREDIENTE":
-                //cargarTablaIngrediente();
+
+                try {
+                    Ingrediente ingredienteEliminar = ((TableView<Ingrediente>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    //Se manda a eliminar el elemento del empleado con el id
+                    System.out.println("Eliminando Ingrediente con id "+ ingredienteEliminar.getId() + " y nombre " + ingredienteEliminar.getNombre());
+
+                    mainWindowModel.deleteIngrediente( Integer.parseInt( ingredienteEliminar.getId() ) );  //ELIMINA EL EMPLEADO
+                    cargarTabla("INGREDIENTE");                                                      //VUELVE A CARGAR LA TABLA
+                } catch (Exception e){
+                    mostrarAlerta(1, "No ha seleccionado ningún Ingrediente","De click sobre el Ingrediente que quiere eliminar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "PROVEEDOR":
                 //cargarTablaProveedor();
@@ -389,16 +434,56 @@ public class MainWindowController {
 
                 break;
             case "SUCURSAL":
-                Sucursal sucursalActualizar = ((TableView<Sucursal>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
-                System.out.println("Nuevos Valores de la Sucursal " + sucursalActualizar);
-                //Se manda a actualizar el empleado al MainModelo
+                try{
+                    Sucursal sucursalActualizar = ((TableView<Sucursal>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores de la Sucursal " + sucursalActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar la Sucursal con los siguientes datos", sucursalActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        mainWindowModel.updateSucursal(sucursalActualizar);
+                    }
+
+                    cargarTabla("SUCURSAL"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar La sucursal", "Debe tener seleccionado  cuando presiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
+
             case "PRODUCTO":
-                //cargarTablaProducto();
+                try{
+                    Producto productoActualizar = ((TableView<Producto>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores del Producto " + productoActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar el producto con los siguientes datos", productoActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        mainWindowModel.updateProducto(productoActualizar);
+                    }
+
+                    cargarTabla("PRODUCTO"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar el Producto", "Debe tener seleccionado el producto cuando presiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
+
             case "CLIENTE":
-                //cargarTablaCliente();
+                try{
+                    Cliente clienteAActualizar = ((TableView<Cliente>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores del cliente " + clienteAActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar el Cliente con los siguientes datos", clienteAActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        mainWindowModel.updateCliente(clienteAActualizar);
+                    }
+
+                    cargarTabla("CLIENTE"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar Cliente", "Debe tener seleccionado el cliente cuando presiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
+
             case "PEDIDO":
                 //cargarTablaPedido();
                 break;
@@ -406,13 +491,36 @@ public class MainWindowController {
                 //cargarTablaBitacora();
                 break;
             case "USUARIO":
-                Usuario usuarioActualizar = ((TableView<Usuario>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
-                System.out.println("Nuevos Valores del Usuario " + usuarioActualizar);
-                //Se manda a actualizar el empleado al MainModelo
+                try{
+                    Usuario usuarioActualizar = ((TableView<Usuario>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores del Usuario " + usuarioActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar el usuario con los siguientes datos", usuarioActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        mainWindowModel.updateUsuario(usuarioActualizar);
+                    }
 
+                    cargarTabla("USUARIO"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar el Usuario", "Debe tener seleccionado el usuario cuando presiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "INGREDIENTE":
-                //cargarTablaIngrediente();
+                try{
+                    Ingrediente ingredienteActualizar = ((TableView<Ingrediente>) borderPane_centerTable.getChildren().get(1)).getSelectionModel().getSelectedItem();
+                    System.out.println("Nuevos Valores del Ingrediente " + ingredienteActualizar);
+                    //Alert para confirmar los cambios
+                    Optional<ButtonType> result = mostrarAlerta(3, "Desea Actualizar el ingrediente con los siguientes datos", ingredienteActualizar.toString()).showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        mainWindowModel.updateIngrediente(ingredienteActualizar);
+                    }
+
+                    cargarTabla("INGREDIENTE"); //Vuelve a cargar la tabla
+                }catch (Exception e){
+                    mostrarAlerta(2, "Error al actualizar el Ingrediente", "Debe tener seleccionado el Ingrediente cuando presiona actualizar").showAndWait();
+                    System.out.println(e.toString());
+                }
                 break;
             case "PROVEEDOR":
                 //cargarTablaProveedor();
@@ -441,15 +549,15 @@ public class MainWindowController {
 
         dialog.setHeaderText("Ingrese los valores necesarios para la Tabla, separados por coma(,).");
 
-        // Traditional way to get the response value.
+        //Toma el valor de la ventanita
+        Optional<String> result = dialog.showAndWait();
 
         switch (mainWindowModel.getTablaActual()){
             case "EMPLEADO":
-
                 dialog.setHeaderText("Ingrese idSucursal, puesto, nombre, apellido, apellido, telefono ");
                 //Hay que crear un alert view con textfields para cada columna de la tabla actual
                 //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
-                Optional<String> result = dialog.showAndWait();
+                result = dialog.showAndWait();
                 if (result.isPresent()){
                     String valoresEmpleado[] = result.get().split(",");
 
@@ -470,16 +578,65 @@ public class MainWindowController {
                     System.out.println("OK no vamos a realizar ningun cambio");
                 }
                 break;
-            case "SUCURSAL":
 
-                //Se manda a actualizar el empleado al MainModelo
+            case "SUCURSAL":
+                dialog.setHeaderText("Ingrese Telefono, Direccion");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String[] valoresSucursal = result.get().split(",");
+                    try {
+                        //Crea el nuevo empleado
+                        mainWindowModel.insertNuevoSucursal(valoresSucursal);
+                        cargarTabla("SUCURSAL"); //Vuelve a cargar la tabla para reflejar los cambios
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
                 break;
             case "PRODUCTO":
-                //cargarTablaProducto();
+                dialog.setHeaderText("Ingrese Nombre, Descripcion, Receta");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String[] valoresProducto = result.get().split(",");
+                    try {
+                        //Crea el nuevo empleado
+                        mainWindowModel.insertNuevoProducto(valoresProducto);
+                        cargarTabla("PRODUCTO"); //Vuelve a cargar la tabla para reflejar los cambios
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
                 break;
             case "CLIENTE":
-                //cargarTablaCliente();
+                dialog.setHeaderText("Ingrese Nombre, Telefono");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String[] valoresCliente = result.get().split(",");
+                    try {
+                        //Crea el nuevo empleado
+                        mainWindowModel.insertNuevoCliente(valoresCliente);
+                        cargarTabla("CLIENTE"); //Vuelve a cargar la tabla para reflejar los cambios
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
                 break;
+
             case "PEDIDO":
                 //cargarTablaPedido();
                 break;
@@ -488,10 +645,42 @@ public class MainWindowController {
                 break;
             case "USUARIO":
 
-                //Se manda a actualizar el empleado al MainModelo
+                dialog.setHeaderText("Ingrese Id_Empleado, Nombre de Usuario, Contraseña");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String[] valoresUsuario = result.get().split(",");
+                    try {
+                        //Crea el nuevo empleado
+                        mainWindowModel.insertNuevoUsuario(valoresUsuario);
+                        cargarTabla("USUARIO"); //Vuelve a cargar la tabla para reflejar los cambios
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
                 break;
             case "INGREDIENTE":
-                //cargarTablaIngrediente();
+                dialog.setHeaderText("Ingrese Nombre, Medida");
+                //Hay que crear un alert view con textfields para cada columna de la tabla actual
+                //Tomar los valores de ese alert view y mandarlo a actualizar a la base de datos.
+                result = dialog.showAndWait();
+                if (result.isPresent()){
+                    String[] valoresIngrediente = result.get().split(",");
+                    try {
+                        //Crea el nuevo empleado
+                        mainWindowModel.insertNuevoIngrediente(valoresIngrediente);
+                        cargarTabla("INGREDIENTE"); //Vuelve a cargar la tabla para reflejar los cambios
+                    }catch (Exception e){
+                        System.out.println(e.toString());
+                        mostrarAlerta(2, "No ingresó los valores necesarios o hubo un error con la base de datos", "Intentelo de nuevo").showAndWait();
+                    }
+                }else {
+                    System.out.println("OK no vamos a realizar ningun cambio");
+                }
                 break;
             case "PROVEEDOR":
                 //cargarTablaProveedor();

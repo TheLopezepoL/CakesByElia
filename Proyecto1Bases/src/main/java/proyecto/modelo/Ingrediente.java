@@ -2,15 +2,13 @@ package proyecto.modelo;
 
 public class Ingrediente {
     private String id;
-    private String id_pedido;
-    private String tipoCambio;
-    private String fecha;
+    private String nombre;
+    private String medida;
 
-    public Ingrediente(String id, String id_pedido, String tipoCambio, String fecha) {
+    public Ingrediente(String id, String nombre, String medida) {
         this.id = id;
-        this.id_pedido = id_pedido;
-        this.tipoCambio = tipoCambio;
-        this.fecha = fecha;
+        this.nombre = nombre;
+        this.medida = medida;
     }
 
     public String getId() {
@@ -21,37 +19,28 @@ public class Ingrediente {
         this.id = id;
     }
 
-    public String getId_pedido() {
-        return id_pedido;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setId_pedido(String id_pedido) {
-        this.id_pedido = id_pedido;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getTipoCambio() {
-        return tipoCambio;
+    public String getMedida() {
+        return medida;
     }
 
-    public void setTipoCambio(String tipoCambio) {
-        this.tipoCambio = tipoCambio;
+    public void setMedida(String medida) {
+        this.medida = medida;
     }
 
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-
-    @java.lang.Override
-    public java.lang.String toString() {
+    @Override
+    public String toString() {
         return "Ingrediente{" +
-                "id='" + id + '\'' +
-                ", id_pedido='" + id_pedido + '\'' +
-                ", tipoCambio='" + tipoCambio + '\'' +
-                ", fecha='" + fecha + '\'' +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", medida='" + medida + '\'' +
                 '}';
     }
 }
