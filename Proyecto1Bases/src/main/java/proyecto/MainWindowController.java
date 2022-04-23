@@ -151,8 +151,10 @@ public class MainWindowController {
         //Aca sabemos el nombre de la tabla a cargar
 
         String tablaCargar = id.replace("btn_","");
+        mainWindowModel.setTablaActual(tablaCargar);
 
         switch (tablaCargar){
+
             case "EMPLEADO":
                 //Acá debemos pedir al MainWindowModel la lista de ObservableList de la base de datos
 
@@ -168,6 +170,7 @@ public class MainWindowController {
                 break;
             case "SUCURSAL":
                 //cargarTablaSucursal();
+
                 break;
             case "PRODUCTO":
                 //cargarTablaProducto();
