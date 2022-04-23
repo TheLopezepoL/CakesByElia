@@ -21,18 +21,18 @@ public class OracleJBDC {
         instancia = new OracleJBDC();
     }
 
-    private OracleJBDC(){
+    private OracleJBDC() {
 
     }
 
-    public static OracleJBDC getInstancia(){
+    public static OracleJBDC getInstancia() {
         return instancia;
     }
 
     /*
     Función para probar la conexion a la base de datos, no se va a utilizar al final
     */
-    public void probarConexion (){
+    public void probarConexion() {
         Connection conexion = null;
         Statement sentencia = null;
 
@@ -54,8 +54,8 @@ public class OracleJBDC {
             ResultSet resultado = sentencia.executeQuery(testSQL);
 
 
-            while (resultado.next()){
-                System.out.println( resultado.getString("table_name") );
+            while (resultado.next()) {
+                System.out.println(resultado.getString("table_name"));
             }
 
             resultado.close();
@@ -69,14 +69,14 @@ public class OracleJBDC {
     }
 
     //Devuelve la coneccion a la base de datos para ejecutar queries
-    private Connection conectarBaseDatos(  ){
+    private Connection conectarBaseDatos() {
         try {
             Connection conexion = DriverManager.getConnection(instanciaURL, instanciaUsuario, instaciaContrasenia);  //Hace la conexion con la base de datos
 
             System.out.println("Base de Datos Conectada");
 
 
-            return  conexion;
+            return conexion;
 
         } catch (SQLException e) {
             System.err.println(e.getClass().getName() + " : " + e.getMessage());
@@ -93,7 +93,7 @@ public class OracleJBDC {
             System.out.println("Base de Datos Desconectada");
 
             return true;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println(e.getClass().getName() + " : " + e.getMessage());
             return false;
         }
@@ -106,7 +106,7 @@ public class OracleJBDC {
             pSentencia.close();
             System.out.println("Base de Datos Desconectada");
             return true;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println(e.getClass().getName() + " : " + e.getMessage());
             return false;
         }
@@ -129,19 +129,18 @@ public class OracleJBDC {
             cerrarConexionBase(conBase, validarLogin_fn);
 
             return idEmpleado;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error conectandose a la base de datos para traer el usuario");
             return 0;
         }
     }
 
 
-
     //Retorna lista de las tablas que el usuario tiene acceso
     public ArrayList<String> getTablasUsuarioBaseDatos() throws SQLException {
         Connection baseDatos = conectarBaseDatos();
 
-        if (baseDatos != null){
+        if (baseDatos != null) {
             System.out.println("Trayendo las tablas del usuario de la base de datos");
 
             Statement sentenciaProcedimiento = baseDatos.createStatement();
@@ -152,13 +151,13 @@ public class OracleJBDC {
             ArrayList<String> listaTablas = new ArrayList<>();
 
             Empleado empleado = null;
-            while (resultado.next() ){
+            while (resultado.next()) {
                 listaTablas.add(resultado.getString("TABLE_NAME"));
             }
             cerrarConexionBase(baseDatos, sentenciaProcedimiento, resultado);
             return listaTablas;
 
-        }else {
+        } else {
             return null;
         }
     }
@@ -166,11 +165,11 @@ public class OracleJBDC {
     //CRUD DE LAS TABLAS
     //************ EMPLEADO //************ EMPLEADO //************ EMPLEADO //************ EMPLEADO
 
-    public ObservableList<Empleado> getTablaEmpleado () throws SQLException {
+    public ObservableList<Empleado> getTablaEmpleado() throws SQLException {
 
         Connection baseDatos = conectarBaseDatos();
 
-        if (baseDatos != null){
+        if (baseDatos != null) {
             System.out.println("Trayendo Empleados de tabla EMPLEADO");
 
             Statement sentenciaSQL = baseDatos.createStatement();
@@ -180,7 +179,7 @@ public class OracleJBDC {
 
             ObservableList<Empleado> listaEmpleados = FXCollections.observableArrayList(); //Esta lista se debe obtener desde el OJBDC
 
-            while (resultado.next()){
+            while (resultado.next()) {
                 Empleado empleado = new Empleado(resultado.getString("id_Empleado"),
                         resultado.getString("id_sucursalfk"),
                         resultado.getString("puesto_empleado"),
@@ -195,7 +194,7 @@ public class OracleJBDC {
             cerrarConexionBase(baseDatos, sentenciaSQL, resultado);
             return listaEmpleados;
 
-        }else {
+        } else {
             return null;
         }
 
@@ -205,15 +204,15 @@ public class OracleJBDC {
     public Empleado getEmpleado(int idEmpleado) throws SQLException {
         Connection baseDatos = conectarBaseDatos();
 
-        if (baseDatos != null){
+        if (baseDatos != null) {
             Statement sentenciaSQL = baseDatos.createStatement();
             System.out.println("Trayendo al Empleado con ID " + idEmpleado + " de la base de datos.");
 
-            String getEmpelado = "SELECT * FROM empleado WHERE id_empleado = " + idEmpleado ;
+            String getEmpelado = "SELECT * FROM empleado WHERE id_empleado = " + idEmpleado;
 
             ResultSet resultado = sentenciaSQL.executeQuery(getEmpelado);
             Empleado empleado = null;
-            while (resultado.next()){
+            while (resultado.next()) {
                 empleado = new Empleado("" + idEmpleado, resultado.getString("id_sucursalfk"),
                         resultado.getString("puesto_empleado"),
                         resultado.getString("nombre_empleado"),
@@ -224,7 +223,7 @@ public class OracleJBDC {
             }
             cerrarConexionBase(baseDatos, sentenciaSQL, resultado);
             return empleado;
-        }else {
+        } else {
             return null;
         }
     }
@@ -271,7 +270,7 @@ public class OracleJBDC {
 
     }
 
-    public void updateEmpleado( Empleado empleado) throws SQLException {
+    public void updateEmpleado(Empleado empleado) throws SQLException {
         Connection baseDatos = conectarBaseDatos();
 
         if (baseDatos != null) {
@@ -294,6 +293,34 @@ public class OracleJBDC {
         }
     }
 
+    public ObservableList<Cliente> getTableCliente() throws SQLException {
+
+        Connection baseDatos = conectarBaseDatos();
+
+        if (baseDatos != null) {
+            System.out.println("Trayendo Clientes de tabla CLIENTE");
+
+            Statement sentenciaSQL = baseDatos.createStatement();
+            String getClientesSQL = "SELECT * FROM CLIENTE";   //Acá no sé si debe ser un Stored procedure
+
+            ResultSet resultado = sentenciaSQL.executeQuery(getClientesSQL);
+
+            ObservableList<Cliente> listaClientes = FXCollections.observableArrayList(); //Esta lista se debe obtener desde el OJBDC
+
+            while (resultado.next()) {
+                Cliente cliente = new Cliente(resultado.getString("id_Cliente"),
+                        resultado.getString("nombre"),
+                        resultado.getString("telefono"));
+                listaClientes.add(cliente);
+            }
+
+            cerrarConexionBase(baseDatos, sentenciaSQL, resultado);
+            return listaClientes;
+
+        } else
+            return null;
+
+    }
     //************ Cliente //************ Cliente //************ Cliente //************ Cliente
 
     //getTabla()
@@ -1055,3 +1082,5 @@ public class OracleJBDC {
         }
     }
 }
+
+
