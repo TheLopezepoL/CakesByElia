@@ -118,3 +118,4 @@ EXEC cud_pasteleria_pkg.agrPedido(1, 1, 1, TO_DATE('2022-04-21', 'yyyy-mm-dd'), 
 EXEC cud_pasteleria_pkg.agrPedido(2, 1, 2, TO_DATE('2022-04-22', 'yyyy-mm-dd'), TO_DATE('2022-04-28', 'yyyy-mm-dd'), 'San Jose', TO_DATE('2022-04-21', 'yyyy-mm-dd') );
 EXEC cud_pasteleria_pkg.agrPedido(3, 2, 3, TO_DATE('2022-04-23', 'yyyy-mm-dd'), TO_DATE('2022-04-29', 'yyyy-mm-dd'), 'Alajuela',TO_DATE('2022-04-21', 'yyyy-mm-dd') );
  
+commit;
